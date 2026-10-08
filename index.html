@@ -91,6 +91,13 @@ body.detail-open .scene{transform:scale(1.12);opacity:0;filter:blur(4px);pointer
   background:var(--card);box-shadow:0 8px 22px rgba(67,40,26,.22);font:800 15px/54px "Zen Maru Gothic";
   text-align:center;color:var(--ink);transition:.3s;border:1.5px solid var(--line)}
 .lang-btn:hover{transform:translateY(-3px) scale(1.06);box-shadow:0 14px 32px rgba(67,40,26,.3)}
+.music-btn{position:fixed;bottom:156px;right:24px;z-index:960;width:54px;height:54px;border-radius:50%;
+  background:var(--card);box-shadow:0 8px 22px rgba(67,40,26,.22);font-size:23px;line-height:54px;
+  text-align:center;transition:.3s;border:1.5px solid var(--line)}
+.music-btn:hover{transform:translateY(-3px) scale(1.06);box-shadow:0 14px 32px rgba(67,40,26,.3)}
+.music-btn.on{border-color:var(--accent);animation:musicPulse 2.2s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{box-shadow:0 8px 22px rgba(67,40,26,.22)}50%{box-shadow:0 8px 26px rgba(245,163,0,.5)}}
+@media(pointer:coarse){.music-btn{bottom:128px;right:16px;width:46px;height:46px;line-height:46px;font-size:19px}}
 @media(pointer:coarse){.lang-btn{bottom:72px;right:16px;width:46px;height:46px;line-height:46px;font-size:13px}}
 @media(pointer:coarse){.day-btn{bottom:16px;right:16px;width:46px;height:46px;line-height:46px;font-size:21px}}
 /* 建筑 hover 浮空标签 */
@@ -321,6 +328,7 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
 <button class="home-fab" id="homeFab"><span class="x">✕</span>HOME</button>
 <button class="day-btn" id="dayBtn" title="切换白天 / 夜晚">🌙</button>
 <button class="lang-btn" id="langBtn" title="切换中文 / English">EN</button>
+<button class="music-btn" id="musicBtn" title="播放 / 暂停音乐">🎵</button>
 <div class="hover-label" id="hoverLabel"></div>
 
 <div id="lightbox"><img alt="作品放大预览"></div>
@@ -1683,6 +1691,68 @@ addEventListener('resize',()=>{
   camera.aspect=innerWidth/innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth,innerHeight);
+});
+
+/* ===== 休闲背景音乐（程序化 Web Audio，无需外部音频文件） ===== */
+const music={on:false,ctx:null,gain:null,timer:null,step:0};
+const CHORDS=[
+  [261.63,329.63,392.00,493.88], /* Cmaj7 */
+  [220.00,261.63,329.63,392.00], /* Am7 */
+  [174.61,220.00,261.63,329.63], /* Fmaj7 */
+  [196.00,246.94,293.66,392.00]  /* G */
+];
+function musicNote(freq,t0,dur,type,vol){
+  if(!music.ctx)return;
+  const o=music.ctx.createOscillator(),g=music.ctx.createGain();
+  o.type=type;o.frequency.value=freq;
+  const a=Math.max(0.05,dur*0.35);
+  g.gain.setValueAtTime(0,t0);
+  g.gain.linearRampToValueAtTime(vol,t0+a);
+  g.gain.setValueAtTime(vol,t0+dur*0.7);
+  g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+  o.connect(g);g.connect(music.gain);
+  o.start(t0);o.stop(t0+dur+0.08);
+}
+function musicChunk(){
+  if(!music.ctx)return;
+  const t=music.ctx.currentTime+0.05,bar=4,beat=bar/4;
+  const ch=CHORDS[music.step%CHORDS.length];
+  ch.forEach(f=>musicNote(f,t,bar*1.15,'sine',0.045));            /* 柔和 pad 和弦 */
+  for(let i=0;i<8;i++)musicNote(ch[i%ch.length]*(i%2?2:1),t+i*beat*0.5,beat*0.85,'triangle',0.028); /* 轻盈琶音 */
+  music.step++;
+}
+function startMusic(){
+  if(!music.ctx){
+    music.ctx=new (window.AudioContext||window.webkitAudioContext)();
+    music.gain=music.ctx.createGain();
+    music.gain.gain.value=0;
+    music.gain.connect(music.ctx.destination);
+  }
+  music.ctx.resume();
+  const now=music.ctx.currentTime;
+  music.gain.gain.cancelScheduledValues(now);
+  music.gain.gain.setTargetAtTime(0.6,now,0.6);
+  music.step=0;
+  musicChunk();
+  music.timer=setInterval(musicChunk,4000);
+}
+function stopMusic(){
+  if(music.timer){clearInterval(music.timer);music.timer=null;}
+  if(music.ctx)music.gain.gain.setTargetAtTime(0,music.ctx.currentTime,0.3);
+}
+document.getElementById('musicBtn').addEventListener('click',()=>{
+  music.on=!music.on;
+  if(music.on){
+    startMusic();
+    document.getElementById('musicBtn').classList.add('on');
+    document.getElementById('musicBtn').textContent='🎶';
+    showToast(lang==='en'?'Relax and enjoy the island 🎶':'来点轻松的小岛音乐 🎶');
+  }else{
+    stopMusic();
+    document.getElementById('musicBtn').classList.remove('on');
+    document.getElementById('musicBtn').textContent='🎵';
+    showToast(lang==='en'?'Music paused 🔇':'音乐已暂停 🔇');
+  }
 });
 })();
 </script>
