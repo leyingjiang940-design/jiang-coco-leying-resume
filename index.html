@@ -98,6 +98,19 @@ body.detail-open .scene{transform:scale(1.12);opacity:0;filter:blur(4px);pointer
 .music-btn.on{border-color:var(--accent);animation:musicPulse 2.2s ease-in-out infinite}
 @keyframes musicPulse{0%,100%{box-shadow:0 8px 22px rgba(67,40,26,.22)}50%{box-shadow:0 8px 26px rgba(245,163,0,.5)}}
 @media(pointer:coarse){.music-btn{bottom:128px;right:16px;width:46px;height:46px;line-height:46px;font-size:19px}}
+.music-panel{position:fixed;bottom:222px;right:18px;z-index:960;width:150px;
+  background:var(--card);border:1.5px solid var(--line);border-radius:14px;
+  box-shadow:0 8px 22px rgba(67,40,26,.22);padding:11px 13px;
+  display:flex;align-items:center;gap:9px;opacity:0;pointer-events:none;
+  transform:translateY(8px);transition:opacity .25s,transform .25s}
+.music-panel.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.music-panel .vol-icon{font-size:16px;line-height:1}
+.music-panel input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:2px;
+  background:rgba(67,40,26,.18);outline:none;cursor:pointer}
+.music-panel input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;
+  border-radius:50%;background:var(--accent);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.music-panel input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid #fff}
+@media(pointer:coarse){.music-panel{bottom:186px;right:10px;width:132px}}
 @media(pointer:coarse){.lang-btn{bottom:72px;right:16px;width:46px;height:46px;line-height:46px;font-size:13px}}
 @media(pointer:coarse){.day-btn{bottom:16px;right:16px;width:46px;height:46px;line-height:46px;font-size:21px}}
 /* 建筑 hover 浮空标签 */
@@ -329,6 +342,10 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
 <button class="day-btn" id="dayBtn" title="切换白天 / 夜晚">🌙</button>
 <button class="lang-btn" id="langBtn" title="切换中文 / English">EN</button>
 <button class="music-btn" id="musicBtn" title="播放 / 暂停音乐">🎵</button>
+<div class="music-panel" id="musicPanel">
+  <span class="vol-icon">🔊</span>
+  <input type="range" id="musicVol" min="0" max="100" value="60" title="音乐音量">
+</div>
 <div class="hover-label" id="hoverLabel"></div>
 
 <div id="lightbox"><img alt="作品放大预览"></div>
@@ -578,7 +595,7 @@ function setLang(l){
   if(curPage){openPage(curPage)}else{setBoard(lastBoard)}
   if(window.__relang)window.__relang();
 }
-document.getElementById('langBtn').onclick=()=>setLang(lang==='en'?'zh':'en');
+document.getElementById('langBtn').onclick=()=>{setLang(lang==='en'?'zh':'en');sfx('tap');};
 
 /* ================= 详情渲染 ================= */
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
@@ -685,8 +702,8 @@ document.addEventListener('click',e=>{
 document.getElementById('homeFab').onclick=closePage;
 
 const gmenu=document.getElementById('gmenu');
-document.getElementById('menuOpen').onclick=()=>gmenu.classList.add('open');
-document.getElementById('menuClose').onclick=()=>gmenu.classList.remove('open');
+document.getElementById('menuOpen').onclick=()=>{gmenu.classList.add('open');sfx('tap');};
+document.getElementById('menuClose').onclick=()=>{gmenu.classList.remove('open');sfx('tap');};
 function closeMenu(){gmenu.classList.remove('open')}
 
 /* ================= 滚动进度 + 漂流记录 ================= */
@@ -828,7 +845,7 @@ for(let i=0;i<90;i++){
 }
 starGroup.visible=false;
 const dayBtn=document.getElementById('dayBtn');
-if(dayBtn)dayBtn.addEventListener('click',()=>{dayTarget=dayTarget>0?0:1;dayBtn.textContent=dayTarget>0?'☀️':'🌙';});
+if(dayBtn)dayBtn.addEventListener('click',()=>{dayTarget=dayTarget>0?0:1;dayBtn.textContent=dayTarget>0?'☀️':'🌙';sfx('tap');});
 
 /* 环岛海水（分层 + 浪花） */
 const seaOuter=new THREE.Mesh(new THREE.CircleGeometry(32,96),new THREE.MeshLambertMaterial({color:'#58a7bb',transparent:true,opacity:.95}));
@@ -1447,10 +1464,10 @@ addEventListener('pointerup',e=>{
   if(dragging&&!moved){
     const o=pick(e.clientX,e.clientY);
     if(o){
-      if(o.userData.key==='lamp')toggleLamp(o);
-      else if(o.userData.key==='ferris'||o.userData.key==='train')rideRide(o.userData.key);
-      else if(o.userData.key==='boat')showToast(lang==='en'?'A little sailboat drifts on the sea ⛵':'有只小帆船在海上漂呀 ⛵');
-      else flyTo(o.userData.key);
+      if(o.userData.key==='lamp'){toggleLamp(o);sfx('switch');}
+      else if(o.userData.key==='ferris'||o.userData.key==='train'){rideRide(o.userData.key);sfx('ride');}
+      else if(o.userData.key==='boat'){showToast(lang==='en'?'A little sailboat drifts on the sea ⛵':'有只小帆船在海上漂呀 ⛵');sfx('boat');}
+      else{flyTo(o.userData.key);sfx('open',SFX_NOTES[o.userData.key]);}
     }
   }
   dragging=false;
@@ -1476,7 +1493,7 @@ function flyHome(){
   cam.fly={t:0,from:{theta:cam.theta,phi:cam.phi,dist:cam.dist,tgt:cam.tgt.clone()},to};
   cam.tTheta=to.theta;cam.tPhi=to.phi;cam.tDist=to.dist;
 }
-document.getElementById('homeFab').addEventListener('click',()=>setTimeout(()=>{if(ride)endRide();else flyHome()},120));
+document.getElementById('homeFab').addEventListener('click',()=>{sfx('home');setTimeout(()=>{if(ride)endRide();else flyHome()},120);});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.body.classList.contains('detail-open')){if(ride)endRide();else flyHome()}});
 
 /* ===== 摩天轮 / 小火车 骑乘交互 ===== */
@@ -1693,8 +1710,48 @@ addEventListener('resize',()=>{
   renderer.setSize(innerWidth,innerHeight);
 });
 
-/* ===== 休闲背景音乐（程序化 Web Audio，无需外部音频文件） ===== */
-const music={on:false,ctx:null,gain:null,timer:null,step:0};
+/* ===== 点击音效 + 休闲背景音乐（程序化 Web Audio，无需外部音频文件） ===== */
+let sfxCtx=null;
+function sfxAc(){
+  if(!sfxCtx){try{sfxCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}
+  if(sfxCtx.state==='suspended')sfxCtx.resume();
+  return sfxCtx;
+}
+/* 短音效：sfxBlip(起频,末频,时长,波形,音量,延迟) */
+function sfxBlip(f0,f1,dur,type,vol,delay){
+  const a=sfxAc(); if(!a)return;
+  const t=a.currentTime+(delay||0);
+  const o=a.createOscillator(),g=a.createGain();
+  o.type=type||'sine';
+  o.frequency.setValueAtTime(f0,t);
+  o.frequency.exponentialRampToValueAtTime(Math.max(1,f1),t+dur);
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(vol||0.2,t+0.01);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g);g.connect(a.destination);
+  o.start(t);o.stop(t+dur+0.06);
+}
+/* 不同点击对象 → 不同音效 */
+const PENTA=[261.63,293.66,329.63,392.00,440.00,523.25,587.33,659.25];
+const SFX_NOTES={about:0,club:1,proj:2,intern:3,skills:4,life:5,contact:6};
+function sfx(kind,note){
+  switch(kind){
+    case 'open':{                       /* 点开建筑：双音「啵」，不同楼不同音高 */
+      const b=PENTA[(note||0)%PENTA.length];
+      sfxBlip(b,b,0.12,'sine',0.26); sfxBlip(b*1.5,b*1.5,0.1,'sine',0.16,0.05);
+      break;}
+    case 'ride':                        /* 上车：明亮三连音 */
+      [523.25,659.25,783.99].forEach((f,i)=>sfxBlip(f,f,0.09,'sine',0.2,i*0.07));
+      break;
+    case 'boat': sfxBlip(600,170,0.2,'sine',0.22); break;   /* 帆船：咕咚下潜 */
+    case 'switch': sfxBlip(220,120,0.05,'square',0.12); break; /* 开关：咔哒 */
+    case 'tap': sfxBlip(540,380,0.06,'triangle',0.16); break;   /* 普通按钮：轻点 */
+    case 'home': sfxBlip(880,440,0.16,'sine',0.2); break;       /* 返回：下滑 */
+    default: sfxBlip(520,520,0.06,'sine',0.15);
+  }
+}
+/* 背景音乐 */
+const music={on:false,gain:null,timer:null,step:0,vol:0.6};
 const CHORDS=[
   [261.63,329.63,392.00,493.88], /* Cmaj7 */
   [220.00,261.63,329.63,392.00], /* Am7 */
@@ -1702,8 +1759,8 @@ const CHORDS=[
   [196.00,246.94,293.66,392.00]  /* G */
 ];
 function musicNote(freq,t0,dur,type,vol){
-  if(!music.ctx)return;
-  const o=music.ctx.createOscillator(),g=music.ctx.createGain();
+  if(!sfxCtx||!music.gain)return;
+  const o=sfxCtx.createOscillator(),g=sfxCtx.createGain();
   o.type=type;o.frequency.value=freq;
   const a=Math.max(0.05,dur*0.35);
   g.gain.setValueAtTime(0,t0);
@@ -1714,45 +1771,50 @@ function musicNote(freq,t0,dur,type,vol){
   o.start(t0);o.stop(t0+dur+0.08);
 }
 function musicChunk(){
-  if(!music.ctx)return;
-  const t=music.ctx.currentTime+0.05,bar=4,beat=bar/4;
+  if(!sfxCtx)return;
+  const t=sfxCtx.currentTime+0.05,bar=4,beat=bar/4;
   const ch=CHORDS[music.step%CHORDS.length];
   ch.forEach(f=>musicNote(f,t,bar*1.15,'sine',0.045));            /* 柔和 pad 和弦 */
   for(let i=0;i<8;i++)musicNote(ch[i%ch.length]*(i%2?2:1),t+i*beat*0.5,beat*0.85,'triangle',0.028); /* 轻盈琶音 */
   music.step++;
 }
 function startMusic(){
-  if(!music.ctx){
-    music.ctx=new (window.AudioContext||window.webkitAudioContext)();
-    music.gain=music.ctx.createGain();
+  sfxAc(); if(!sfxCtx)return;
+  if(!music.gain){
+    music.gain=sfxCtx.createGain();
     music.gain.gain.value=0;
-    music.gain.connect(music.ctx.destination);
+    music.gain.connect(sfxCtx.destination);
   }
-  music.ctx.resume();
-  const now=music.ctx.currentTime;
+  const now=sfxCtx.currentTime;
   music.gain.gain.cancelScheduledValues(now);
-  music.gain.gain.setTargetAtTime(0.6,now,0.6);
+  music.gain.gain.setTargetAtTime(music.vol,now,0.6);
   music.step=0;
   musicChunk();
   music.timer=setInterval(musicChunk,4000);
 }
 function stopMusic(){
   if(music.timer){clearInterval(music.timer);music.timer=null;}
-  if(music.ctx)music.gain.gain.setTargetAtTime(0,music.ctx.currentTime,0.3);
+  if(sfxCtx&&music.gain)music.gain.gain.setTargetAtTime(0,sfxCtx.currentTime,0.3);
 }
 document.getElementById('musicBtn').addEventListener('click',()=>{
   music.on=!music.on;
+  const btn=document.getElementById('musicBtn'),panel=document.getElementById('musicPanel');
   if(music.on){
     startMusic();
-    document.getElementById('musicBtn').classList.add('on');
-    document.getElementById('musicBtn').textContent='🎶';
+    btn.classList.add('on');btn.textContent='🎶';
+    panel.classList.add('show');
     showToast(lang==='en'?'Relax and enjoy the island 🎶':'来点轻松的小岛音乐 🎶');
   }else{
     stopMusic();
-    document.getElementById('musicBtn').classList.remove('on');
-    document.getElementById('musicBtn').textContent='🎵';
+    btn.classList.remove('on');btn.textContent='🎵';
+    panel.classList.remove('show');
     showToast(lang==='en'?'Music paused 🔇':'音乐已暂停 🔇');
   }
+});
+document.getElementById('musicVol').addEventListener('input',e=>{
+  music.vol=Number(e.target.value)/100;
+  sfxAc();
+  if(sfxCtx&&music.gain)music.gain.gain.setTargetAtTime(music.vol,sfxCtx.currentTime,0.1);
 });
 })();
 </script>
