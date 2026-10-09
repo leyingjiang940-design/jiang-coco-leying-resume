@@ -947,7 +947,7 @@ function signFor(key){
   return signTex[key];
 }
 document.fonts&&document.fonts.ready.then(()=>Object.values(signTex).forEach(s=>s.redraw()));
-window.__relang=()=>{Object.values(signTex).forEach(s=>s.redraw());if(window.__redrawBanner)window.__redrawBanner();if(window.__relangChar)window.__relangChar();};
+window.__relang=()=>{Object.values(signTex).forEach(s=>s.redraw());if(window.__redrawBanner)window.__redrawBanner();};
 function addSign(g,key,H,w,d){
   const dz=(d||2)/2+.12;   /* 招牌贴到楼面正面（朝岛心），不再嵌在楼体中心 */
   const t=signFor(key).texture;
@@ -1505,423 +1505,6 @@ const cubes3=[];
   cubes3.push({m,y0:y,ph:i*1.3});
 });
 
-/* =====================================================================
-   角色系统：捏脸 + 上岛走路 + 小汽车 + NPC「我」溜达 / 跳舞 / 晒太阳
-   ===================================================================== */
-const AV_D={gender:'f',face:'round',eyes:'almond',nose:'small',mouth:'smile',hair:'pony',curl:'straight',hairColor:'#8c4a2f',skin:'#f6d3b2'};
-const AV_FACES={round:[.96,.86,.9],oval:[.86,.96,.86],pointed:[.84,1,.84],square:[1,.8,.82]};
-const AV_SKIN=['#f6d3b2','#f2c79b','#ffe0c0','#eab98a'];
-const AV_HAIR=['#2b2620','#6b4a2f','#8c4a2f','#d9a94f','#e79fb6','#7a5a8c'];
-const AV_SUIT={f:{jacket:'#f2ead6',pants:'#e6dcc2',shirt:'#fbf7ee',lapel:'#d9ceb2',shoe:'#4a4036'},m:{jacket:'#2c2925',pants:'#23211e',shirt:'#f5f1e8',lapel:'#151310',shoe:'#11100e'}};
-const COCO={gender:'f',face:'round',eyes:'almond',nose:'small',mouth:'smile',hair:'pony',curl:'straight',hairColor:'#8c4a2f',skin:'#f6d3b2'};
-
-function lerpAngle(a,b,k){let d=((b-a)%(Math.PI*2));if(d>Math.PI)d-=Math.PI*2;if(d<-Math.PI)d+=Math.PI*2;return a+d*k;}
-
-function makeAvatar(st){
-  const o=Object.assign({},AV_D,st||{});
-  const g=new THREE.Group();
-  const out=AV_SUIT[o.gender==='m'?'m':'f'];
-  const SK=M(o.skin), HR=M(o.hairColor);
-  const legL=box(g,out.pants,-.1,.24,0,.13,.46,.15);
-  const legR=box(g,out.pants,.1,.24,0,.13,.46,.15);
-  box(g,out.shoe,-.1,.05,.02,.16,.1,.24);box(g,out.shoe,.1,.05,.02,.16,.1,.24);
-  box(g,out.jacket,0,.66,0,.6,.42,.34);
-  box(g,out.shirt,0,.73,0,.32,.13,.2);
-  box(g,out.lapel,-.17,.64,0,.1,.4,.02);box(g,out.lapel,.17,.64,0,.1,.4,.02);
-  box(g,out.lapel,0,.67,.16,.07,.12,.03);
-  box(g,out.jacket,-.31,.74,0,.1,.22,.14);box(g,out.jacket,.31,.74,0,.1,.22,.14);
-  box(g,SK,-.34,.63,.02,.12,.12,.12);box(g,SK,.34,.63,.02,.12,.12,.12);
-  box(g,SK,0,.9,0,.12,.1,.12);
-  const fs=AV_FACES[o.face]||AV_FACES.round;
-  const head=new THREE.Mesh(new THREE.SphereGeometry(.26,18,14),SK);
-  head.position.set(0,1.08,0);head.scale.set(fs[0],fs[1],fs[2]);head.castShadow=true;g.add(head);
-  const eGeo=new THREE.SphereGeometry(.05,10,10);
-  if(o.eyes==='happy'){
-    box(g,'#3a2a1c',-.09,1.12,.23,.11,.03,.03);box(g,'#3a2a1c',.09,1.12,.23,.11,.03,.03);
-  }else{
-    const er=o.eyes==='round'?1:.72;
-    const eL=new THREE.Mesh(eGeo,M('#3a2a1c'));eL.scale.set(er,er,.5);eL.position.set(-.09,1.1,.23);g.add(eL);
-    const eR=new THREE.Mesh(eGeo,M('#3a2a1c'));eR.scale.set(er,er,.5);eR.position.set(.09,1.1,.23);g.add(eR);
-    box(g,'#fff',-.06,1.13,.255,.022,.026,.02);box(g,'#fff',.12,1.13,.255,.022,.026,.02);
-  }
-  box(g,HR,-.09,1.24,.22,.12,.02,.04);box(g,HR,.09,1.24,.22,.12,.02,.04);
-  if(o.nose==='point')box(g,SK,0,1.06,.24,.05,.09,.06);else box(g,SK,0,1.08,.24,.08,.04,.03);
-  if(o.mouth==='pout'){const mm=new THREE.Mesh(new THREE.SphereGeometry(.032,8,8),M('#c76a5a'));mm.position.set(0,.97,.24);g.add(mm);}
-  else if(o.mouth==='open'){box(g,'#8a3a2c',0,.97,.24,.08,.06,.04);}
-  else box(g,'#c76a5a',0,.985,.24,.13,.02,.015);
-  addHair(g,o,HR);
-  g.userData.parts={legL,legR,head};
-  g.userData.style=o;
-  return g;
-}
-function addHair(g,o,HR){
-  const curly=o.curl==='curly';
-  const cap=new THREE.Mesh(new THREE.SphereGeometry(.265,14,12),HR);
-  cap.position.set(0,1.14,0);cap.scale.set(1,.9,1);g.add(cap);
-  if(curly){
-    for(let i=0;i<5;i++){const c=new THREE.Mesh(new THREE.SphereGeometry(.07,8,8),HR);c.position.set((i-2)*.075,1.21,.225);c.scale.set(1,.8,1);g.add(c);}
-  }else{
-    box(g,HR,0,1.2,.225,.5,.12,.05);
-  }
-  const bl={short:0,medium:.26,long:.54,pony:.16}[o.hair]||0;
-  if(bl>0){
-    if(curly){
-      for(let i=0;i<4;i++){const c=new THREE.Mesh(new THREE.SphereGeometry(.085,8,8),HR);c.position.set((i-1.5)*.11,1.12-i*.07,-.24);g.add(c);}
-    }else{
-      box(g,HR,0,1.02-bl/2,-.26,.5,bl,.1);
-    }
-  }
-  if(o.hair==='pony'){
-    box(g,HR,0,1.32,-.34,.16,.18,.14);
-    const pt=new THREE.Mesh(new THREE.SphereGeometry(.1,10,10),HR);pt.position.set(0,1.42,-.3);pt.scale.set(.8,.5,.8);g.add(pt);
-  }
-}
-
-/* 玩家 / NPC / 汽车 实体 */
-let mode='overview';
-const keys={};
-let avState=Object.assign({},COCO);
-const player={x:0,z:1.6,yaw:0,anim:0,tg:null,tgKey:null,group:null};
-player.group=makeAvatar(COCO);
-player.group.position.set(0,.12,1.6);
-island.add(player.group);
-const npc={x:0,z:5.2,angle:0,yaw:1.57,anim:0,timer:0,state:'walk',action:null,actT:0,as:null,group:null};
-npc.group=makeAvatar(COCO);
-npc.group.position.set(0,.12,5.2);
-npc.group.userData.key='npc';
-island.add(npc.group);
-interactables.push(npc.group);
-const carV={x:-1.6,z:3.3,yaw:0,v:0,group:null};
-carV.group=new THREE.Group();
-carV.group.userData.key='car';
-(function(){
-  const c=carV.group;
-  box(c,'#e8836f',0,.32,0,1.5,.4,.7);
-  box(c,'#f5b93c',0,.62,-.02,.9,.32,.62);
-  box(c,'#fffdf4',0,.62,.2,.92,.09,.46);
-  box(c,'#3a332c',-.52,.52,-.2,.16,.1,.1);box(c,'#3a332c',.52,.52,-.2,.16,.1,.1);
-  for(const sx of[-.55,.55])for(const sz of[-.62,.62]){
-    const wh=new THREE.Mesh(new THREE.CylinderGeometry(.16,.16,.1,10),M('#2b2620'));
-    wh.rotation.z=Math.PI/2;wh.position.set(sx,.16,sz);c.add(wh);
-  }
-})();
-island.add(carV.group);
-interactables.push(carV.group);
-
-const beach={x:11.3,z:2.5};
-let beachMat=null;
-function setupBeach(){
-  if(beachMat)return;
-  beachMat=box(island,'#f5c9a3',beach.x,.15,beach.z,2.4,.05,1.2);
-  beachMat.rotation.y=.5;
-  const umb=new THREE.Group();umb.position.set(beach.x+.55,0,beach.z+.4);island.add(umb);
-  box(umb,'#8a5a3a',0,.7,0,.07,1.4,.07);
-  box(umb,'#e8836f',0,1.45,0,1.8,.06,1.8);
-  box(umb,'#f5b93c',0,1.48,.1,.1,.03,.1);
-}
-
-function pickGround(cx,cy){
-  pv.set(cx/innerWidth*2-1,-(cy/innerHeight)*2+1);
-  ray.setFromCamera(pv,camera);
-  const hit=new THREE.Vector3();
-  if(ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-.12),hit)){
-    const r=Math.hypot(hit.x,hit.z);
-    if(r<11&&r>.4)return hit;
-  }
-  return null;
-}
-function clampToIsland(){
-  let rr=Math.hypot(player.x,player.z);
-  if(rr>10.5){player.x*=10.5/rr;player.z*=10.5/rr;rr=10.5;}
-  for(const b of Object.values(builds)){
-    const dx=player.x-b.x,dz=player.z-b.z,d=Math.hypot(dx,dz);
-    if(d<1.35){if(d<1e-4){player.x=b.x+1.35;continue;}player.x=b.x+dx/d*1.35;player.z=b.z+dz/d*1.35;}
-  }
-  const dc=Math.hypot(player.x,player.z);
-  if(dc<.85){if(dc<1e-4){player.x=.85;player.z=0;}else{player.x*=.85/dc;player.z*=.85/dc;}}
-}
-function walkToBuilding(k){
-  const b=builds[k];if(!b)return;
-  const len=Math.hypot(b.x,b.z);
-  const s=Math.max(0,(len-2.6)/len);
-  player.tg={x:b.x*s,z:b.z*s};player.tgKey=k;
-  sfx('tap');
-}
-function openBuildingFromWalk(k){
-  const zh=BOARDS[k]&&BOARDS[k].zh||k;
-  showToast(lang==='en'?('You arrived: '+(BOARDS[k]&&BOARDS[k].en||k)):('来到「'+zh+'」啦'));
-  sfx('open',SFX_NOTES[k]);
-  if(window.__co)window.__co.openPage(k);
-}
-
-/* 走路 / 驾车 / NPC 更新（由 tick 调用） */
-function applyWalkPose(g,walking,t){
-  const p=g.userData.parts;if(!p)return;
-  p.legL.rotation.x=walking?Math.sin(t*7)*.5:0;
-  p.legR.rotation.x=walking?-Math.sin(t*7)*.5:0;
-}
-function updatePlayerWalk(dt){
-  if(player.tg){
-    const dx=player.tg.x-player.x,dz=player.tg.z-player.z,d=Math.hypot(dx,dz);
-    if(d<.4){const k=player.tgKey;player.tg=null;player.tgKey=null;if(k)openBuildingFromWalk(k);}
-    else{const sp=Math.min(4,d);player.x+=dx/d*sp*dt;player.z+=dz/d*sp*dt;player.yaw=lerpAngle(player.yaw,Math.atan2(dx,dz),.4);}
-  }else{
-    const fx=-Math.sin(cam.theta),fz=-Math.cos(cam.theta),rx=Math.cos(cam.theta),rz=-Math.sin(cam.theta);
-    let mx=0,mz=0;
-    if(keys['w']||keys['arrowup']){mx+=fx;mz+=fz;}
-    if(keys['s']||keys['arrowdown']){mx-=fx;mz-=fz;}
-    if(keys['d']||keys['arrowright']){mx+=rx;mz+=rz;}
-    if(keys['a']||keys['arrowleft']){mx-=rx;mz-=rz;}
-    const m=Math.hypot(mx,mz);
-    if(m>0){mx/=m;mz/=m;player.x+=mx*4*dt;player.z+=mz*4*dt;player.yaw=lerpAngle(player.yaw,Math.atan2(mx,mz),.4);}
-  }
-  clampToIsland();
-}
-function updateCar(dt){
-  let acc=0;if(keys['w']||keys['arrowup'])acc=1;if(keys['s']||keys['arrowdown'])acc=-1;
-  let st=0;if(keys['a']||keys['arrowleft'])st=1;if(keys['d']||keys['arrowright'])st=-1;
-  carV.v+=acc*7*dt;carV.v*=Math.max(0,1-dt*.35);
-  carV.v=Math.max(-2.5,Math.min(8,carV.v));
-  if(Math.abs(carV.v)>.25)carV.yaw+=st*Math.sign(carV.v)*1.5*dt;
-  carV.x+=Math.sin(carV.yaw)*carV.v*dt;carV.z+=Math.cos(carV.yaw)*carV.v*dt;
-  const rr=Math.hypot(carV.x,carV.z);
-  if(rr>10.5){carV.x*=10.5/rr;carV.z*=10.5/rr;carV.v*=.5;}
-  for(const b of Object.values(builds)){
-    const dx=carV.x-b.x,dz=carV.z-b.z,d=Math.hypot(dx,dz);
-    if(d<1.5){carV.v*=.7;if(d>1e-4){carV.x=b.x+dx/d*1.5;carV.z=b.z+dz/d*1.5;}}
-  }
-}
-function npcUpdate(dt){
-  const b=npc;
-  if(b.action)return;
-  b.timer+=dt;
-  if(b.state==='walk'){
-    b.angle+=dt*.12;
-    b.x=Math.sin(b.angle)*5.2;b.z=Math.cos(b.angle)*5.2;
-    b.yaw=b.angle+Math.PI/2;
-    b.anim+=dt*5;
-    b.group.position.set(b.x,.12,b.z);
-    b.group.rotation.y=b.yaw;
-    if(b.timer>6){b.state='idle';b.timer=0;}
-  }else{
-    b.anim=0;
-    if(b.timer>2.4){b.state='walk';b.timer=0;}
-  }
-}
-function npcDance(){
-  if(npc.action)return;
-  npc.action='dance';npc.actT=0;npc.as={px:player.x,pz:player.z};
-  hideNpcMenu();
-  sfx('tap');showToast(lang==='en'?'Coco wants to dance! 💃':'一起跳舞啦！💃');
-}
-function npcSunbathe(){
-  if(npc.action)return;
-  setupBeach();
-  npc.action='sunbathe';npc.actT=0;npc.as={nx:npc.x,nz:npc.z,px:player.x,pz:player.z};
-  hideNpcMenu();
-  sfx('sea');showToast(lang==='en'?'Off to the beach! 🏖':'去沙滩晒太阳啦 🏖');
-}
-function updateAction(dt){
-  const b=npc;if(!b.action)return;
-  b.actT+=dt;
-  if(b.action==='dance'){
-    const spin=Math.sin(b.actT*5)*.55;
-    b.group.rotation.y=b.yaw+spin;
-    b.group.position.y=.12+Math.abs(Math.sin(b.actT*7))*.08;
-    const tx=b.x+Math.sin(b.yaw+Math.PI)*1.15,tz=b.z+Math.cos(b.yaw+Math.PI)*1.15;
-    player.x+=(tx-player.x)*.12;player.z+=(tz-player.z)*.12;
-    player.group.position.set(player.x,.12+Math.abs(Math.sin(b.actT*7+1))*.08,player.z);
-    player.group.rotation.y=lerpAngle(player.yaw,b.yaw+Math.PI,.3)+spin;
-    clampToIsland();
-    if(b.actT>4){b.action=null;b.group.rotation.x=0;player.group.rotation.x=0;showToast(lang==='en'?'So fun! 🎶':'跳得好开心 🎶');}
-  }else if(b.action==='sunbathe'){
-    const as=b.as,t1=2.2;
-    if(b.actT<t1){
-      const k=ease(Math.min(1,b.actT/t1));
-      const nx=lerp(as.nx,beach.x,k),nz=lerp(as.nz,beach.z,k);
-      const px=lerp(as.px,beach.x+.9,k),pz=lerp(as.pz,beach.z+.5,k);
-      b.group.position.set(nx,.12,nz);b.group.rotation.y=lerpAngle(b.yaw,Math.PI*.2,.2);
-      player.x=px;player.z=pz;
-      player.group.position.set(px,.12,pz);player.group.rotation.y=lerpAngle(player.yaw,Math.PI*.2,.2);
-      clampToIsland();
-    }else if(b.actT<t1+3.5){
-      const lie=Math.min(1,(b.actT-t1)/.6);
-      b.group.position.set(beach.x,.16,beach.z);b.group.rotation.x=-1.45*lie;b.group.rotation.y=Math.PI*.2;
-      player.group.position.set(beach.x+.9,.16,beach.z+.5);player.group.rotation.x=-1.45*lie;player.group.rotation.y=Math.PI*.2;
-    }else{
-      const k=ease(Math.min(1,(b.actT-(t1+3.5))/.9));
-      b.group.rotation.x=-1.45*(1-k);player.group.rotation.x=-1.45*(1-k);
-    }
-    if(b.actT>6.5){
-      b.action=null;b.group.rotation.x=0;player.group.rotation.x=0;
-      player.x=as.px;player.z=as.pz;
-      showToast(lang==='en'?'Sun-kissed and refreshed! ☀️':'晒完太阳，元气满满 ☀️');
-    }
-  }
-}
-function updateChar(dt,t){
-  npcUpdate(dt);
-  updateAction(dt);
-  if(mode==='walk'){
-    updatePlayerWalk(dt);
-    const walking=!!player.tg||keys['w']||keys['a']||keys['s']||keys['d']||keys['arrowup']||keys['arrowdown']||keys['arrowleft']||keys['arrowright'];
-    player.group.position.set(player.x,.12+(walking?Math.abs(Math.sin(t*6))*.04:0),player.z);
-    player.group.rotation.y=player.yaw;
-    applyWalkPose(player.group,walking,t);
-    cam.tgt.x+=(player.x-cam.tgt.x)*.16;cam.tgt.z+=(player.z-cam.tgt.z)*.16;cam.tgt.y=1.2;
-  }else if(mode==='car'){
-    updateCar(dt);
-    carV.group.position.set(carV.x,.16,carV.z);
-    carV.group.rotation.y=carV.yaw;
-    carV.group.rotation.z=Math.sin(t*4)*.02;
-    cam.tgt.x+=(carV.x-cam.tgt.x)*.16;cam.tgt.z+=(carV.z-cam.tgt.z)*.16;cam.tgt.y=1.0;
-  }
-  updateNpcMenu();
-}
-
-/* ===== 步行 / 汽车 进出 ===== */
-function enterWalk(){
-  if(mode==='walk')return;
-  if(ride){endRide();}
-  mode='walk';
-  player.x=0;player.z=1.6;player.tg=null;player.tgKey=null;
-  player.group.position.set(0,.12,1.6);player.group.rotation.x=0;player.group.rotation.y=0;
-  cam.tgt.set(0,1.2,1.6);cam.tDist=7.5;cam.tPhi=1.02;cam.tTheta=Math.PI;
-  updateLandBtn();
-  showToast(lang==='en'?'You are on the island. WASD to walk 🚶':'你上岛啦，WASD / 点地面走路 🚶');
-  sfx('home');
-}
-function exitWalk(){
-  mode='overview';player.tg=null;player.tgKey=null;player.group.rotation.x=0;
-  updateLandBtn();hideNpcMenu();
-}
-function enterCar(){
-  if(mode==='car')return;
-  if(ride){endRide();}
-  exitWalkHelper();
-  mode='car';carV.v=0;
-  cam.tgt.set(carV.x,1.0,carV.z);cam.tDist=8;cam.tPhi=1.0;
-  updateLandBtn();
-  showToast(lang==='en'?'Hop in! WASD to drive 🚗':'上车啦，WASD 开车 🚗');
-  sfx('ride');
-}
-function exitWalkHelper(){mode='overview';player.tg=null;player.tgKey=null;player.group.rotation.x=0;hideNpcMenu();}
-function exitCar(){
-  mode='overview';carV.v=0;updateLandBtn();
-}
-
-/* ===== NPC 互动菜单 ===== */
-function hideNpcMenu(){const el=document.getElementById('npcMenu');if(el){el.style.opacity=0;el.style.pointerEvents='none';}}
-function npcMenu(){
-  let el=document.getElementById('npcMenu');
-  if(!el){
-    el=document.createElement('div');el.id='npcMenu';
-    el.style.cssText='position:fixed;left:50%;bottom:108px;transform:translateX(-50%);z-index:9998;display:flex;gap:10px;opacity:0;pointer-events:none;transition:opacity .25s;font-family:inherit';
-    const mk=(txt,fn)=>{const b=document.createElement('button');b.className='npc-btn';b.textContent=txt;b.onclick=fn;return b;};
-    el.appendChild(mk('💃 跳舞','__d'));el.appendChild(mk('🏖 晒太阳','__s'));
-    el.querySelectorAll('button')[0].onclick=npcDance;
-    el.querySelectorAll('button')[1].onclick=npcSunbathe;
-    document.body.appendChild(el);
-    if(!document.getElementById('npcBtnStyle')){
-      const st=document.createElement('style');st.id='npcBtnStyle';
-      st.textContent='.npc-btn{background:rgba(244,160,0,.96);color:#43281a;border:none;padding:10px 18px;border-radius:99px;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.25);font-family:inherit}';
-      document.head.appendChild(st);
-    }
-  }
-  return el;
-}
-function updateNpcMenu(){
-  const el=npcMenu();
-  const near=mode==='walk'&&!npc.action&&Math.hypot(player.x-npc.x,player.z-npc.z)<1.9;
-  el.style.opacity=near?1:0;el.style.pointerEvents=near?'auto':'none';
-}
-
-/* ===== 上岛 / 捏脸 按钮 ===== */
-function mkBtn(id,txt,bottom){
-  let el=document.getElementById(id);
-  if(el)return el;
-  el=document.createElement('button');el.id=id;
-  el.style.cssText='position:fixed;left:20px;bottom:'+bottom+'px;z-index:9997;height:44px;padding:0 18px;border:none;border-radius:99px;background:rgba(67,40,26,.9);color:#f4a000;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;box-shadow:0 8px 20px rgba(0,0,0,.28);transition:transform .15s';
-  document.body.appendChild(el);
-  return el;
-}
-function updateLandBtn(){
-  const el=mkBtn('landBtn','',96);
-  el.textContent=(mode==='walk'||mode==='car')?(lang==='en'?'Leave island 🏠':'离开小岛 🏠'):(lang==='en'?'Land on island 🚶':'上岛走走 🚶');
-  el.onclick=()=>{if(mode==='walk')exitWalk();else if(mode==='car')exitCar();else enterWalk();};
-  const ab=mkBtn('avatarBtn','🎭 '+(lang==='en'?'Avatar':'捏脸'),152);
-  ab.onclick=openAvatar;
-  if(lang==='en')ab.textContent='🎭 Avatar';else ab.textContent='🎭 捏脸';
-}
-updateLandBtn();
-window.__relangChar=()=>{updateLandBtn();if(avPanelBuilt)renderAvatarUI();};
-
-/* ===== 捏脸 UI 面板 ===== */
-const AV_OPTS=[
-  {k:'gender',zh:'性别',en:'Gender',ops:[['f','女生','Female'],['m','男生','Male']]},
-  {k:'face',zh:'脸型',en:'Face',ops:[['round','圆脸','Round'],['oval','鹅蛋','Oval'],['pointed','瓜子','Pointed'],['square','方脸','Square']]},
-  {k:'eyes',zh:'眼睛',en:'Eyes',ops:[['round','圆眼','Round'],['almond','杏眼','Almond'],['happy','眯眯','Smiley']]},
-  {k:'nose',zh:'鼻子',en:'Nose',ops:[['small','小巧','Small'],['point','挺鼻','Pointy']]},
-  {k:'mouth',zh:'嘴巴',en:'Mouth',ops:[['smile','微笑','Smile'],['pout','抿嘴','Pout'],['open','张嘴','Open']]},
-  {k:'hair',zh:'头发',en:'Hair',ops:[['short','短发','Short'],['medium','中长','Medium'],['long','长发','Long'],['pony','马尾','Ponytail']]},
-  {k:'curl',zh:'发质',en:'Type',ops:[['straight','直发','Straight'],['curly','卷发','Curly']]}
-];
-let avPanelBuilt=false;
-function setAv(k,v){avState[k]=v;rebuildAvatar();renderAvatarUI();}
-function rebuildAvatar(){
-  const old=player.group;
-  const ng=makeAvatar(avState);
-  ng.position.copy(old.position);ng.rotation.copy(old.rotation);
-  island.remove(old);island.add(ng);
-  player.group=ng;
-}
-function ensureAvStyles(){
-  if(document.getElementById('avStyles'))return;
-  const st=document.createElement('style');st.id='avStyles';
-  st.textContent='.av-panel{position:fixed;left:50%;bottom:0;transform:translateX(-50%) translateY(100%);z-index:9999;width:min(520px,94vw);max-height:78vh;overflow:auto;background:#f7ecd7;color:#43281a;border-radius:22px 22px 0 0;padding:18px 20px 26px;box-shadow:0 -12px 40px rgba(0,0,0,.3);transition:transform .3s;font-family:inherit}.av-panel.show{transform:translateX(-50%) translateY(0)}.av-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}.av-head b{font-size:17px}.av-close{border:none;background:#e8836f;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:15px}.av-row{margin:10px 0}.av-label{font-size:12px;opacity:.7;margin-bottom:5px}.av-chips{display:flex;flex-wrap:wrap;gap:6px}.av-chip{border:1px solid rgba(67,40,26,.25);background:transparent;color:#43281a;padding:6px 12px;border-radius:99px;font-size:13px;cursor:pointer;font-family:inherit}.av-chip.on{background:#f4a000;color:#fff;border-color:#f4a000}.av-swatch{width:26px;height:26px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(67,40,26,.3);cursor:pointer}.av-swatch.on{box-shadow:0 0 0 3px #f4a000}';
-  document.head.appendChild(st);
-}
-function renderAvatarUI(){
-  const el=document.getElementById('avPanel');if(!el)return;
-  el.querySelectorAll('[data-avrow]').forEach(r=>{
-    const k=r.dataset.avrow;
-    r.querySelectorAll('.av-chip').forEach(c=>c.classList.toggle('on',c.dataset.v===String(avState[k])));
-  });
-  el.querySelectorAll('.av-swatch').forEach(s=>s.classList.toggle('on',s.dataset.c===avState.hairColor));
-}
-function openAvatar(){
-  ensureAvStyles();
-  let el=document.getElementById('avPanel');
-  if(!el){el=document.createElement('div');el.id='avPanel';el.className='av-panel';document.body.appendChild(el);}
-  el.innerHTML=`
-    <div class="av-head"><b>🎭 ${lang==='en'?'Avatar':'捏脸'}</b><button class="av-close" id="avClose">✕</button></div>
-    <div style="font-size:12px;opacity:.6;margin-bottom:4px">${lang==='en'?'Preview updates on your island avatar in real time.':'改动会实时反映到岛上你的角色身上。'}</div>
-    ${AV_OPTS.map(o=>`
-      <div class="av-row" data-avrow="${o.k}">
-        <div class="av-label">${lang==='en'?o.en:o.zh}</div>
-        <div class="av-chips">${o.ops.map(op=>`<button class="av-chip" data-v="${op[0]}" onclick="window.__setAv('${o.k}','${op[0]}')">${lang==='en'?op[2]:op[1]}</button>`).join('')}</div>
-      </div>`).join('')}
-    <div class="av-row"><div class="av-label">${lang==='en'?'Hair color':'发色'}</div>
-      <div class="av-chips">${AV_HAIR.map((c,i)=>`<div class="av-swatch" data-c="${c}" style="background:${c}" onclick="window.__setAv('hairColor','${c}')"></div>`).join('')}</div>
-    </div>`;
-  el.querySelector('#avClose').onclick=closeAvatar;
-  renderAvatarUI();
-  el.classList.add('show');
-  avPanelBuilt=true;
-}
-function closeAvatar(){const el=document.getElementById('avPanel');if(el)el.classList.remove('show');}
-window.__setAv=setAv;
-
-/* 键盘：WASD / 方向键 + Esc 离开 */
-addEventListener('keydown',e=>{
-  const k=e.key.toLowerCase();
-  if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)){
-    keys[k]=true;
-    if(k.indexOf('arrow')===0)e.preventDefault();
-  }
-  if(e.key==='Escape'){if(mode==='car')exitCar();else if(mode==='walk')exitWalk();}
-});
-addEventListener('keyup',e=>{const k=e.key.toLowerCase();keys[k]=false;});
 
 /* ===== 交互：拖拽 / hover / 点击进楼 ===== */
 const ray=new THREE.Raycaster(),pv=new THREE.Vector2();
@@ -1946,7 +1529,7 @@ function pickSea(cx2,cy2){
 }
 for(const [k,b] of Object.entries(builds))b.group.userData.key=k;
 /* 每栋楼 hover 时的浮空标签文案 */
-const HOVER_TXT={about:{zh:'认识我',en:'ABOUT ME'},club:{zh:'40+ 场活动',en:'40+ EVENTS'},proj:{zh:'12 个项目',en:'12 PROJECTS'},intern:{zh:'今日营业',en:'OPEN TODAY'},skills:{zh:'我的工具箱',en:'MY TOOLBOX'},life:{zh:'岛外生活',en:'OFF ISLAND'},contact:{zh:'写信给我',en:'WRITE TO ME'},ferris:{zh:'坐摩天轮吗？',en:'Take a ride?'},train:{zh:'环岛小火车',en:'Island train'},boat:{zh:'海上小帆船',en:'Little sailboat'},chime:{zh:'敲一下风铃',en:'Ring the chime'},shell:{zh:'捡贝壳',en:'Pick a shell'},treasure:{zh:'这是什么？',en:'What is this?'},bird:{zh:'点一下海鸟',en:'Boop the seagull'},gong:{zh:'敲灯塔钟',en:'Ring the bell'},windmill:{zh:'转风车',en:'Spin the windmill'},sun:{zh:'戳一下太阳',en:'Poke the sun'},npc:{zh:'想一起玩吗？',en:'Wanna play?'},car:{zh:'上车开车',en:'Hop in & drive'}};
+const HOVER_TXT={about:{zh:'认识我',en:'ABOUT ME'},club:{zh:'40+ 场活动',en:'40+ EVENTS'},proj:{zh:'12 个项目',en:'12 PROJECTS'},intern:{zh:'今日营业',en:'OPEN TODAY'},skills:{zh:'我的工具箱',en:'MY TOOLBOX'},life:{zh:'岛外生活',en:'OFF ISLAND'},contact:{zh:'写信给我',en:'WRITE TO ME'},ferris:{zh:'坐摩天轮吗？',en:'Take a ride?'},train:{zh:'环岛小火车',en:'Island train'},boat:{zh:'海上小帆船',en:'Little sailboat'},chime:{zh:'敲一下风铃',en:'Ring the chime'},shell:{zh:'捡贝壳',en:'Pick a shell'},treasure:{zh:'这是什么？',en:'What is this?'},bird:{zh:'点一下海鸟',en:'Boop the seagull'},gong:{zh:'敲灯塔钟',en:'Ring the bell'},windmill:{zh:'转风车',en:'Spin the windmill'},sun:{zh:'戳一下太阳',en:'Poke the sun'}};
 const hoverLabel=document.getElementById('hoverLabel');
 function showHoverLabel(k,x,y){
   if(k&&k!=='lamp'&&HOVER_TXT[k]){
@@ -1979,7 +1562,7 @@ addEventListener('pointermove',e=>{
     if(k!==hoverKey){
       hoverKey=k;
       cv.classList.toggle('hover-b',!!k);
-      if(k&&mode==='overview'&&builds[k])window.__co.setBoard(k);
+      if(k&&builds[k])window.__co.setBoard(k);
     }
     showHoverLabel(k,e.clientX,e.clientY);
   }
@@ -1987,21 +1570,7 @@ addEventListener('pointermove',e=>{
 addEventListener('pointerup',e=>{
   cv.classList.remove('dragging');
   if(dragging&&!moved){
-    if(mode==='walk'){
-      const o=pick(e.clientX,e.clientY),k=o?o.userData.key:null;
-      if(k==='car'){enterCar();}
-      else if(k==='npc'){if(Math.hypot(player.x-npc.x,player.z-npc.z)<2.2)npcDance();else showToast(lang==='en'?'Walk closer to Coco to play together!':'走近一点，再和我一起玩呀');}
-      else if(k==='ferris'||k==='train'){exitWalk();rideRide(k);sfx('ride');}
-      else if(k&&builds[k]){walkToBuilding(k);}
-      else{
-        const gp=pickGround(e.clientX,e.clientY);
-        if(gp){player.tg={x:gp.x,z:gp.z};player.tgKey=null;sfx('tap');}
-      }
-    }else if(mode==='car'){
-      const o=pick(e.clientX,e.clientY),k=o?o.userData.key:null;
-      if(k==='ferris'||k==='train'){exitCar();rideRide(k);sfx('ride');}
-    }else{
-      const o=pick(e.clientX,e.clientY);
+    const o=pick(e.clientX,e.clientY);
       if(o){
         if(o.userData.key==='lamp'){toggleLamp(o);sfx('switch');}
         else if(o.userData.key==='ferris'||o.userData.key==='train'){rideRide(o.userData.key);sfx('ride');}
@@ -2018,7 +1587,6 @@ addEventListener('pointerup',e=>{
         const sp=pickSea(e.clientX,e.clientY);
         if(sp){addRipple(sp.x,sp.z);addFish(sp.x,sp.z);sfx('sea');}
       }
-    }
   }
   dragging=false;
   hoverLabel.classList.remove('on');
@@ -2296,7 +1864,6 @@ function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
       ride.look.copy(look);camera.position.copy(eye);camera.lookAt(look);
     }
   }
-  updateChar(dt,t);
   renderer.render(scene,camera);
   if(!introFired){introFired=true;if(window.__introsFinish)setTimeout(window.__introsFinish,450)}
 })();
