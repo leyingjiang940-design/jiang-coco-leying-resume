@@ -1860,7 +1860,7 @@ function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
         const right=new THREE.Vector3().crossVectors(dir,up).normalize();
         dir.applyAxisAngle(right,ride.el);
       }
-      look.add(eye);
+      look.copy(eye).add(dir);
       ride.look.copy(look);camera.position.copy(eye);camera.lookAt(look);
     }
   }
