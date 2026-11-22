@@ -291,6 +291,18 @@ body.detail-open .music-panel{opacity:0;pointer-events:none;transform:translateX
 .vcard video{display:block;width:100%;height:230px;object-fit:cover;background:#000}
 @media(max-width:620px){.vcard video{height:205px}}
 .vcard figcaption{padding:10px 12px;font-size:12.5px;color:var(--ink-soft);font-weight:700}
+.vcard-link{display:block;text-decoration:none;color:inherit;position:relative;cursor:pointer}
+.vcard-link .vposter{display:block;width:100%;height:230px;object-fit:cover;background:#000;transition:.3s}
+@media(max-width:620px){.vcard-link .vposter{height:205px}}
+.vcard-link:hover .vposter{transform:scale(1.04)}
+.vcard-link .play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:56px;height:56px;border-radius:50%;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);
+  display:flex;align-items:center;justify-content:center;transition:.25s;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.vcard-link .play-btn::before{content:"";width:0;height:0;border-left:17px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:5px}
+.vcard-link:hover .play-btn{background:var(--accent);transform:translate(-50%,-50%) scale(1.08)}
+.vcard-link .vbadge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.62);color:#fff;
+  font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:99px;pointer-events:none;letter-spacing:.3px}
+.vcard-link .vgo{color:var(--accent);font-weight:800}
 
 .post-show{margin-top:18px;border-top:1px dashed var(--line);padding-top:16px}
 .post-show-head{margin-bottom:12px}
@@ -574,11 +586,11 @@ const secrets=[
   ["🎬","AI 影像","用 AI 生成视频 · 产品广告与创意短片"]
 ];
 const kplVideos=[
- ["assets-v1/videos/kpl-1106-jdg.mp4","assets-v1/videos/kpl-1106-jdg-poster.jpg","11.6 胜决 · JDG 呐喊"],
- ["assets-v1/videos/kpl-1108-wb.mp4","assets-v1/videos/kpl-1108-wb-poster.jpg","11.8 败决 · WB 呐喊"],
- ["assets-v1/videos/kpl-1110-mvp.mp4","assets-v1/videos/kpl-1110-mvp-poster.jpg","11.10 JDG vs WB · 无畏空空儿 MVP"],
- ["assets-v1/videos/kpl-1111-moyang.mp4","assets-v1/videos/kpl-1111-moyang-poster.jpg","11.11 墨阳肘击"],
- ["assets-v1/videos/kpl-1112-qingrong.mp4","assets-v1/videos/kpl-1112-qingrong-poster.jpg","11.12 清融海月"]
+ ["assets-v1/videos/kpl-1106-jdg.mp4","assets-v1/videos/kpl-1106-jdg-poster.jpg","11.6 胜决 · JDG 呐喊","https://weixin.qq.com/sph/AUb9Ikzo5a"],
+ ["assets-v1/videos/kpl-1108-wb.mp4","assets-v1/videos/kpl-1108-wb-poster.jpg","11.8 败决 · WB 呐喊","https://weixin.qq.com/sph/AsBA81B4ly"],
+ ["assets-v1/videos/kpl-1110-mvp.mp4","assets-v1/videos/kpl-1110-mvp-poster.jpg","11.10 JDG vs WB · 无畏空空儿 MVP","https://weixin.qq.com/sph/AAC9gU8ff4"],
+ ["assets-v1/videos/kpl-1111-moyang.mp4","assets-v1/videos/kpl-1111-moyang-poster.jpg","11.11 墨阳肘击","https://weixin.qq.com/sph/A1sIFX63Zs"],
+ ["assets-v1/videos/kpl-1112-qingrong.mp4","assets-v1/videos/kpl-1112-qingrong-poster.jpg","11.12 清融海月","https://weixin.qq.com/sph/AL5gJ8Hexy"]
 ];
 
 /* ================= 英文数据 ================= */
@@ -703,17 +715,17 @@ const secretsEn=[
   ["🎬","AI Filmmaking","AI-generated videos · product ads & creative shorts"]
 ];
 const kplVideosEn=[
- ["assets-v1/videos/kpl-1106-jdg.mp4","assets-v1/videos/kpl-1106-jdg-poster.jpg","Nov 6 · Winner's Final · JDG cheers"],
- ["assets-v1/videos/kpl-1108-wb.mp4","assets-v1/videos/kpl-1108-wb-poster.jpg","Nov 8 · Loser's Final · WB cheers"],
- ["assets-v1/videos/kpl-1110-mvp.mp4","assets-v1/videos/kpl-1110-mvp-poster.jpg","Nov 10 · JDG vs WB · Wuwei Kongkong'er MVP"],
- ["assets-v1/videos/kpl-1111-moyang.mp4","assets-v1/videos/kpl-1111-moyang-poster.jpg","Nov 11 · Mo Yang elbow play"],
- ["assets-v1/videos/kpl-1112-qingrong.mp4","assets-v1/videos/kpl-1112-qingrong-poster.jpg","Nov 12 · Qingrong Haimoon"]
+ ["assets-v1/videos/kpl-1106-jdg.mp4","assets-v1/videos/kpl-1106-jdg-poster.jpg","Nov 6 · Winner's Final · JDG cheers","https://weixin.qq.com/sph/AUb9Ikzo5a"],
+ ["assets-v1/videos/kpl-1108-wb.mp4","assets-v1/videos/kpl-1108-wb-poster.jpg","Nov 8 · Loser's Final · WB cheers","https://weixin.qq.com/sph/AsBA81B4ly"],
+ ["assets-v1/videos/kpl-1110-mvp.mp4","assets-v1/videos/kpl-1110-mvp-poster.jpg","Nov 10 · JDG vs WB · Wuwei Kongkong'er MVP","https://weixin.qq.com/sph/AAC9gU8ff4"],
+ ["assets-v1/videos/kpl-1111-moyang.mp4","assets-v1/videos/kpl-1111-moyang-poster.jpg","Nov 11 · Mo Yang elbow play","https://weixin.qq.com/sph/A1sIFX63Zs"],
+ ["assets-v1/videos/kpl-1112-qingrong.mp4","assets-v1/videos/kpl-1112-qingrong-poster.jpg","Nov 12 · Qingrong Haimoon","https://weixin.qq.com/sph/AL5gJ8Hexy"]
 ];
 const aiFilms=[
- ["assets-v1/videos/ai-film-1.mp4","assets-v1/videos/ai-film-1-poster.png","蓝色毛绒玩偶 · AI 产品广告片（豆包 AI 生成）"]
+ ["assets-v1/videos/ai-film-1.mp4","assets-v1/videos/ai-film-1-poster.png","蓝色毛绒玩偶 · AI 产品广告片（豆包 AI 生成）","https://weixin.qq.com/sph/A1oH3twqrh"]
 ];
 const aiFilmsEn=[
- ["assets-v1/videos/ai-film-1.mp4","assets-v1/videos/ai-film-1-poster.png","Blue plush toy · AI product commercial (Doubao AI)"]
+ ["assets-v1/videos/ai-film-1.mp4","assets-v1/videos/ai-film-1-poster.png","Blue plush toy · AI product commercial (Doubao AI)","https://weixin.qq.com/sph/A1oH3twqrh"]
 ];
 
 /* ================= 板块配置 ================= */
@@ -878,7 +890,7 @@ const PAGES={
   proj:{html:()=>(lang==='en'?projsEn:projs).map(projCard).join('')},
   intern:{html:()=>(lang==='en'?internsEn:interns).map(internCard).join('')},
   skills:{html:()=>(lang==='en'?skillsEn:skills).map(s=>`<div class="skill-row reveal"><b>${esc(s[0])}</b><span>${esc(s[1])}</span></div>`).join('')},
-  life:{html:()=>{const v=lang==='en'?kplVideosEn:kplVideos,vt=lang==='en'?'KPL Match Edits':'KPL 赛事剪辑',vs=lang==='en'?'Clips I edited during the 2026 KPL season — the moments that made me jump off my seat.':'2026 KPL 赛季期间剪的赛场切片——那些让我从椅子上跳起来的瞬间。',af=lang==='en'?aiFilmsEn:aiFilms,aft=lang==='en'?'AI Films':'AI 影像',afs=lang==='en'?'Short videos I created with AI — product commercials & creative clips.':'用 AI 生成的短视频——产品广告与创意片段。';const gal=arr=>`<div class="video-gallery">${arr.map(x=>`<figure class="vcard"><video controls preload="metadata" playsinline poster="${esc(x[1])}" src="${esc(x[0])}"></video><figcaption>${esc(x[2])}</figcaption></figure>`).join('')}</div>`;const vBlock=`<div class="video-block life-span"><div class="video-head"><b>🎮 ${esc(vt)}</b><span>${esc(vs)}</span></div>${gal(v)}</div>`;const aBlock=`<div class="video-block life-span"><div class="video-head"><b>🎬 ${esc(aft)}</b><span>${esc(afs)}</span></div>${gal(af)}</div>`;return `<div class="life-grid reveal">${(lang==='en'?secretsEn:secrets).map((s,i)=>`<div class="life-card"><span class="emoji">${s[0]}</span><b>${esc(s[1])}</b><span>${esc(s[2])}</span>${s[3]?`<a class="life-link" href="${esc(s[3])}" target="_blank" rel="noopener">${lang==='en'?'Read →':'阅读 →'}</a>`:''}${s[4]?`<div class="dl-list">${s[4].map(d=>`<a class="dl-btn" href="${esc(d[0])}" download="${esc(d[3])}">${esc(d[lang==='en'?2:1])}</a>`).join('')}</div>`:''}</div>${i===1?vBlock:''}${i===5?aBlock:''}`).join('')}</div>`}},
+  life:{html:()=>{const v=lang==='en'?kplVideosEn:kplVideos,vt=lang==='en'?'KPL Match Edits':'KPL 赛事剪辑',vs=lang==='en'?'Clips I edited during the 2026 KPL season — the moments that made me jump off my seat.':'2026 KPL 赛季期间剪的赛场切片——那些让我从椅子上跳起来的瞬间。',af=lang==='en'?aiFilmsEn:aiFilms,aft=lang==='en'?'AI Films':'AI 影像',afs=lang==='en'?'Short videos I created with AI — product commercials & creative clips.':'用 AI 生成的短视频——产品广告与创意片段。';const gal=arr=>`<div class="video-gallery">${arr.map(x=>x[3]?`<a class="vcard vcard-link" href="${esc(x[3])}" target="_blank" rel="noopener"><img class="vposter" src="${esc(x[1])}" alt="${esc(x[2])}"><span class="play-btn" aria-hidden="true"></span><span class="vbadge">${lang==='en'?'WeChat':'微信视频号'}</span><figcaption>${esc(x[2])} <span class="vgo">${lang==='en'?'Watch →':'观看 →'}</span></figcaption></a>`:`<figure class="vcard"><video controls preload="metadata" playsinline poster="${esc(x[1])}" src="${esc(x[0])}"></video><figcaption>${esc(x[2])}</figcaption></figure>`).join('')}</div>`;const vBlock=`<div class="video-block life-span"><div class="video-head"><b>🎮 ${esc(vt)}</b><span>${esc(vs)}</span></div>${gal(v)}</div>`;const aBlock=`<div class="video-block life-span"><div class="video-head"><b>🎬 ${esc(aft)}</b><span>${esc(afs)}</span></div>${gal(af)}</div>`;return `<div class="life-grid reveal">${(lang==='en'?secretsEn:secrets).map((s,i)=>`<div class="life-card"><span class="emoji">${s[0]}</span><b>${esc(s[1])}</b><span>${esc(s[2])}</span>${s[3]?`<a class="life-link" href="${esc(s[3])}" target="_blank" rel="noopener">${lang==='en'?'Read →':'阅读 →'}</a>`:''}${s[4]?`<div class="dl-list">${s[4].map(d=>`<a class="dl-btn" href="${esc(d[0])}" download="${esc(d[3])}">${esc(d[lang==='en'?2:1])}</a>`).join('')}</div>`:''}</div>${i===1?vBlock:''}${i===5?aBlock:''}`).join('')}</div>`}},
   contact:{html:()=> lang==='en'?`
     <div class="postcard reveal">
       <span class="stamp">🐾</span>
