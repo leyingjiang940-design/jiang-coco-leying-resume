@@ -1,0 +1,26 @@
+﻿lark-cli : {
+At line:15 char:1562
++ ... xt"; $out = lark-cli docs +fetch --document-id "Q8TqdiVzmoXkVdx3j2hcN ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ({:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  "ok": false,
+  "error": {
+    "type": "validation",
+    "subtype": "invalid_argument",
+    "message": "unknown flag \"--document-id\" for \"lark-cli docs +fetch\"",
+    "hint": "did you mean --doc, --doc-format? (run `lark-cli docs +fetch --help` for all flags)",
+    "params": [
+      {
+        "name": "--document-id",
+        "reason": "unknown flag",
+        "suggestions": [
+          "--doc",
+          "--doc-format"
+        ]
+      }
+    ]
+  }
+}
+

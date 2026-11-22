@@ -11,11 +11,12 @@
 <style>
 :root{
   --bg:#f2e4bd; --bg-deep:#ecd9a4;
-  --ink:#43281a; --ink-soft:rgba(67,40,26,.62);
-  --accent:#f5a300; --accent-deep:#e07f00;
+  --ink:#43281a; --ink-rgb:67,40,26; --ink-soft:rgba(var(--ink-rgb),.62);
+  --accent:#f5a300; --accent-rgb:245,163,0; --accent-deep:#e07f00;
   --leaf:#5f9e56; --sea:#5cb8ae;
-  --card:#fffdf4; --line:rgba(67,40,26,.16);
-  --shadow:0 14px 34px rgba(67,40,26,.14);
+  --card:#fffdf4; --line:rgba(var(--ink-rgb),.16);
+  --shadow:0 14px 34px rgba(var(--ink-rgb),.14);
+  --cream:#efe3c0; --cream-rgb:239,227,192;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);
@@ -26,7 +27,7 @@ a{color:inherit}img{max-width:100%;display:block}
 button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit}
 
 #cur{position:fixed;z-index:9999;top:-11px;left:-11px;width:22px;height:22px;pointer-events:none;
-  font-size:20px;line-height:22px;text-align:center;filter:drop-shadow(0 2px 2px rgba(67,40,26,.3));display:block}
+  font-size:20px;line-height:22px;text-align:center;filter:drop-shadow(0 2px 2px rgba(var(--ink-rgb),.3));display:block}
 @media(pointer:coarse){#cur{display:none}}
 .paw-pop{position:fixed;z-index:9998;pointer-events:none;font-size:16px;animation:pawPop .8s ease-out forwards}
 @keyframes pawPop{0%{opacity:.9;transform:translateY(0) scale(.7)}100%{opacity:0;transform:translateY(-34px) scale(1.15) rotate(14deg)}}
@@ -42,13 +43,13 @@ body.detail-open #prog{opacity:1}
 .gheader .logo b{font:900 16px/1 "Zen Maru Gothic","Noto Sans SC"}
 .gheader .logo small{font:700 9.5px/1 "Zen Maru Gothic";letter-spacing:.28em;color:var(--ink-soft)}
 .nav-pill{margin-left:auto;pointer-events:auto;display:flex;gap:2px;background:#fff;border-radius:99px;
-  padding:5px 8px;box-shadow:0 8px 22px rgba(67,40,26,.12)}
+  padding:5px 8px;box-shadow:0 8px 22px rgba(var(--ink-rgb),.12)}
 .nav-pill a{text-decoration:none;font-size:12.5px;font-weight:700;color:var(--ink);
   padding:6px 13px;border-radius:99px;transition:.2s;white-space:nowrap}
 .nav-pill a:hover{background:var(--accent);color:#fff}
 .menu-button{margin-left:auto;pointer-events:auto;display:none;align-items:center;gap:9px;
   background:#fff;border-radius:99px;padding:11px 20px;font:700 12px/1 "Zen Maru Gothic";
-  letter-spacing:.24em;box-shadow:0 8px 22px rgba(67,40,26,.12);transition:.25s}
+  letter-spacing:.24em;box-shadow:0 8px 22px rgba(var(--ink-rgb),.12);transition:.25s}
 .menu-button:hover{background:var(--accent);color:#fff}
 .menu-button .bars{display:grid;gap:3px}
 .menu-button .bars i{width:15px;height:2px;background:currentColor;border-radius:2px}
@@ -84,29 +85,29 @@ body.detail-open .scene{transform:scale(1.12);opacity:0;filter:blur(4px);pointer
   border:1.5px dashed var(--line);border-radius:99px;padding:6px 18px;pointer-events:none;transition:opacity .6s}
 .drag-hint.hide{opacity:0}
 .day-btn{position:fixed;bottom:24px;right:24px;z-index:960;width:54px;height:54px;border-radius:50%;
-  background:var(--card);box-shadow:0 8px 22px rgba(67,40,26,.22);font-size:25px;line-height:54px;
+  background:var(--card);box-shadow:0 8px 22px rgba(var(--ink-rgb),.22);font-size:25px;line-height:54px;
   text-align:center;transition:.3s;border:1.5px solid var(--line)}
-.day-btn:hover{transform:translateY(-3px) scale(1.06);box-shadow:0 14px 32px rgba(67,40,26,.3)}
+.day-btn:hover{transform:translateY(-3px) scale(1.06);box-shadow:0 14px 32px rgba(var(--ink-rgb),.3)}
 .lang-btn{position:fixed;bottom:90px;right:24px;z-index:960;width:54px;height:54px;border-radius:50%;
-  background:var(--card);box-shadow:0 8px 22px rgba(67,40,26,.22);font:800 15px/54px "Zen Maru Gothic";
+  background:var(--card);box-shadow:0 8px 22px rgba(var(--ink-rgb),.22);font:800 15px/54px "Zen Maru Gothic";
   text-align:center;color:var(--ink);transition:.3s;border:1.5px solid var(--line)}
-.lang-btn:hover{transform:translateY(-3px) scale(1.06);box-shadow:0 14px 32px rgba(67,40,26,.3)}
+.lang-btn:hover{transform:translateY(-3px) scale(1.06);box-shadow:0 14px 32px rgba(var(--ink-rgb),.3)}
 .music-btn{position:fixed;bottom:156px;right:24px;z-index:960;width:54px;height:54px;border-radius:50%;
-  background:var(--card);box-shadow:0 8px 22px rgba(67,40,26,.22);font-size:23px;line-height:54px;
+  background:var(--card);box-shadow:0 8px 22px rgba(var(--ink-rgb),.22);font-size:23px;line-height:54px;
   text-align:center;transition:.3s;border:1.5px solid var(--line)}
-.music-btn:hover{transform:translateY(-3px) scale(1.06);box-shadow:0 14px 32px rgba(67,40,26,.3)}
+.music-btn:hover{transform:translateY(-3px) scale(1.06);box-shadow:0 14px 32px rgba(var(--ink-rgb),.3)}
 .music-btn.on{border-color:var(--accent);animation:musicPulse 2.2s ease-in-out infinite}
-@keyframes musicPulse{0%,100%{box-shadow:0 8px 22px rgba(67,40,26,.22)}50%{box-shadow:0 8px 26px rgba(245,163,0,.5)}}
+@keyframes musicPulse{0%,100%{box-shadow:0 8px 22px rgba(var(--ink-rgb),.22)}50%{box-shadow:0 8px 26px rgba(var(--accent-rgb),.5)}}
 @media(pointer:coarse){.music-btn{bottom:128px;right:16px;width:46px;height:46px;line-height:46px;font-size:19px}}
 .music-panel{position:fixed;bottom:222px;right:18px;z-index:960;width:150px;
   background:var(--card);border:1.5px solid var(--line);border-radius:14px;
-  box-shadow:0 8px 22px rgba(67,40,26,.22);padding:11px 13px;
+  box-shadow:0 8px 22px rgba(var(--ink-rgb),.22);padding:11px 13px;
   display:flex;align-items:center;gap:9px;opacity:0;pointer-events:none;
   transform:translateY(8px);transition:opacity .25s,transform .25s}
 .music-panel.show{opacity:1;pointer-events:auto;transform:translateY(0)}
 .music-panel .vol-icon{font-size:16px;line-height:1}
 .music-panel input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:2px;
-  background:rgba(67,40,26,.18);outline:none;cursor:pointer}
+  background:rgba(var(--ink-rgb),.18);outline:none;cursor:pointer}
 .music-panel input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;
   border-radius:50%;background:var(--accent);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .music-panel input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid #fff}
@@ -115,9 +116,9 @@ body.detail-open .scene{transform:scale(1.12);opacity:0;filter:blur(4px);pointer
 @media(pointer:coarse){.day-btn{bottom:16px;right:16px;width:46px;height:46px;line-height:46px;font-size:21px}}
 /* 建筑 hover 浮空标签 */
 .hover-label{position:fixed;z-index:970;pointer-events:none;transform:translate(-50%,-150%);
-  background:var(--ink);color:#efe3c0;font:900 13px/1 "Zen Maru Gothic","Noto Sans SC";
+  background:var(--ink);color:var(--cream);font:900 13px/1 "Zen Maru Gothic","Noto Sans SC";
   letter-spacing:.16em;text-transform:uppercase;padding:9px 15px;border-radius:11px;
-  box-shadow:0 10px 24px rgba(67,40,26,.32);opacity:0;white-space:nowrap;
+  box-shadow:0 10px 24px rgba(var(--ink-rgb),.32);opacity:0;white-space:nowrap;
   transition:opacity .12s ease}
 .hover-label.on{opacity:1}
 .hover-label::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);
@@ -126,7 +127,7 @@ body.detail-open .scene{transform:scale(1.12);opacity:0;filter:blur(4px);pointer
 /* 信息卡 */
 .info-card{position:absolute;left:4vw;top:50%;transform:translateY(-58%);z-index:20;
   width:270px;background:#fff;border-radius:18px;padding:26px 26px 24px;
-  box-shadow:0 18px 44px rgba(67,40,26,.16)}
+  box-shadow:0 18px 44px rgba(var(--ink-rgb),.16)}
 .info-card .hello{font:700 10.5px/1 "Zen Maru Gothic";letter-spacing:.3em;color:var(--ink-soft);text-transform:uppercase}
 .info-card .cat{margin-top:12px;font:900 19px/1.4 "Zen Maru Gothic","Noto Sans SC";color:var(--accent-deep)}
 .info-card .cat-en{font:700 10.5px/1 "Zen Maru Gothic";letter-spacing:.32em;color:var(--ink-soft);text-transform:uppercase;margin-top:2px}
@@ -154,17 +155,22 @@ body.detail-open .detail{transform:none;opacity:1;pointer-events:auto}
 .home-fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);z-index:950;
   display:flex;align-items:center;gap:12px;background:#fff;border-radius:99px;padding:15px 34px;
   font:900 14px/1 "Zen Maru Gothic","Noto Sans SC";letter-spacing:.14em;
-  box-shadow:0 12px 30px rgba(67,40,26,.22);opacity:0;pointer-events:none;transition:.45s cubic-bezier(.25,.8,.3,1)}
+  box-shadow:0 12px 30px rgba(var(--ink-rgb),.22);opacity:0;pointer-events:none;transition:.45s cubic-bezier(.25,.8,.3,1)}
 body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-50%)}
+/* 详情页打开时收起右侧悬浮按钮，避免遮挡内容（手机端尤其明显） */
+body.detail-open .music-btn,
+body.detail-open .lang-btn,
+body.detail-open .day-btn,
+body.detail-open .music-panel{opacity:0;pointer-events:none;transform:translateX(18px) scale(.9);transition:opacity .35s,transform .35s}
 .home-fab:hover{background:var(--accent);color:#fff}
 .home-fab .x{font-size:15px;font-weight:900}
 
 .detail-inner{max-width:760px;margin:0 auto;padding:96px 22px 110px}
 .page-head{text-align:center;margin-bottom:16px}
 .sign-board{display:inline-block;position:relative;background:var(--ink);border-radius:12px;
-  padding:14px 34px;border:3px solid #efe3c0;box-shadow:0 8px 20px rgba(67,40,26,.25);margin-bottom:26px}
-.sign-board::before{content:"";position:absolute;inset:5px;border:2px dashed rgba(239,227,192,.5);border-radius:8px}
-.sign-board span{font:900 clamp(16px,3vw,22px)/1 "Zen Maru Gothic";letter-spacing:.3em;color:#efe3c0;text-transform:uppercase}
+  padding:14px 34px;border:3px solid var(--cream);box-shadow:0 8px 20px rgba(var(--ink-rgb),.25);margin-bottom:26px}
+.sign-board::before{content:"";position:absolute;inset:5px;border:2px dashed rgba(var(--cream-rgb),.5);border-radius:8px}
+.sign-board span{font:900 clamp(16px,3vw,22px)/1 "Zen Maru Gothic";letter-spacing:.3em;color:var(--cream);text-transform:uppercase}
 .checker{width:64px;height:12px;margin:0 auto 14px;opacity:.9;
   background:
    conic-gradient(var(--accent) 90deg,transparent 90deg 180deg,var(--accent) 180deg 270deg,transparent 270deg) 0 0/8px 8px,
@@ -177,7 +183,7 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
 
 .msg p{margin-bottom:1.7em;font-size:15px}
 .msg .sign{margin-top:2.4em;text-align:right;font-weight:700}
-.msg .hl{background:linear-gradient(transparent 62%,rgba(245,163,0,.35) 62%);font-weight:700}
+.msg .hl{background:linear-gradient(transparent 62%,rgba(var(--accent-rgb),.35) 62%);font-weight:700}
 .edu-band{display:flex;align-items:center;gap:16px;background:var(--card);border:2px solid var(--line);
   border-radius:16px;padding:18px 24px;margin:30px 0}
 .edu-band .y{font:900 20px/1 "Zen Maru Gothic";color:var(--accent-deep);white-space:nowrap}
@@ -200,15 +206,60 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
   border-radius:99px;padding:4px 13px;text-decoration:none;transition:.25s}
 .works a{background:var(--accent);color:#fff;border:1.5px solid var(--accent);font-weight:700}
 .works a:hover{background:var(--accent-deep);border-color:var(--accent-deep);color:#fff;transform:translateY(-2px)}
-.works span{background:rgba(67,40,26,.05);color:var(--ink-soft);border:1.5px dashed var(--line)}
+.works span{background:rgba(var(--ink-rgb),.05);color:var(--ink-soft);border:1.5px dashed var(--line)}
 
 .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
 .gallery figure{margin:0;border-radius:12px;overflow:hidden;cursor:zoom-in;position:relative;border:2px solid var(--line);background:#fff}
 .gallery img{width:100%;height:150px;object-fit:cover;transition:transform .4s}
 .gallery figure:hover img{transform:scale(1.06)}
 .gallery figcaption{position:absolute;left:0;right:0;bottom:0;font-size:11px;color:#fff;text-align:center;
-  background:linear-gradient(transparent,rgba(67,40,26,.78));padding:18px 8px 6px}
+  background:linear-gradient(transparent,rgba(var(--ink-rgb),.78));padding:18px 8px 6px}
 @media(max-width:620px){.gallery{grid-template-columns:repeat(2,1fr)}.gallery img{height:118px}}
+
+/* ---- 关于我 · 证件照（单独放，圆角矩形） ---- */
+.about-portrait{margin:2px 0 10px}
+.polaroid{display:inline-block;cursor:zoom-in;border-radius:18px;overflow:hidden;
+  border:2px solid var(--line);box-shadow:var(--shadow);background:#fff;
+  transition:transform .35s,box-shadow .35s}
+.polaroid:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 26px rgba(67,40,26,.28)}
+.polaroid img{display:block;width:160px;height:auto}
+.polaroid .cap{margin:6px 0 8px;text-align:center;font:700 12px/1.25 "Zen Maru Gothic";color:var(--ink-soft);letter-spacing:.06em}
+
+/* ---- 关于我 · 自拍照片墙 ---- */
+.photo-wall{margin:2px 0 14px}
+.wall-scroll{position:relative;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+  padding:40px 0 46px;scrollbar-width:thin;scrollbar-color:var(--line) transparent;cursor:grab}
+.wall-scroll.dragging{cursor:grabbing}
+.wall-scroll::-webkit-scrollbar{height:8px}
+.wall-scroll::-webkit-scrollbar-track{background:transparent}
+.wall-scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+.wall-scroll::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+.wall-track{display:flex;align-items:flex-start;gap:15px;padding:0 26px;width:max-content}
+.wall-tile{position:relative;margin:0;height:var(--h);flex:0 0 auto;border-radius:14px;overflow:hidden;
+  border:2px solid var(--line);background:#fff;box-shadow:var(--shadow);cursor:zoom-in;
+  transform:rotate(var(--r));transform-origin:center top;will-change:transform;
+  transition:transform .5s cubic-bezier(.2,.75,.3,1),box-shadow .5s,filter .45s}
+.wall-tile img{display:block;height:100%;width:auto;max-width:none;pointer-events:none;user-select:none;-webkit-user-drag:none;border-radius:11px}
+/* 悬停聚光：其余变暗，当前这张放大回正 */
+.wall-track:hover .wall-tile{filter:brightness(.76) saturate(.82)}
+.wall-track .wall-tile:hover{transform:rotate(0) scale(1.18) translateY(-10px);z-index:6;
+  filter:brightness(1) saturate(1);box-shadow:0 20px 40px rgba(67,40,26,.3)}
+.wall-hint{text-align:center;font:700 11.5px/1 "Zen Maru Gothic";color:var(--ink-soft);letter-spacing:.22em;margin-top:2px}
+.wall-hint::before{content:"↔  ";color:var(--accent)}
+@media(max-width:620px){
+  .wall-scroll{padding:22px 0 24px}
+  .wall-track{gap:11px;padding:0 18px}
+  .wall-tile{height:calc(var(--h) * .72)}
+  .wall-track .wall-tile:hover{transform:rotate(0) scale(1.1) translateY(-6px)}
+  /* 证件照在手机上缩小，避免占满半屏 */
+  .polaroid img{width:108px}
+  .polaroid .cap{font-size:10.5px;margin:5px 0 7px}
+  .about-portrait{margin:0 0 8px}
+  /* 详情页顶部留白收紧 */
+  .detail-inner{padding:76px 18px 100px}
+  /* 首页底部信息卡右侧避让悬浮按钮列，More 不被遮挡 */
+  .info-card{right:62px}
+}
 
 .skill-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;background:var(--card);
   border:2px solid var(--line);border-radius:16px;padding:18px 24px;margin-bottom:12px;transition:.3s}
@@ -216,13 +267,53 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
 .skill-row b{font-size:14.5px;min-width:150px}
 .skill-row b::before{content:"🌴 "}
 .skill-row span{color:var(--ink-soft);font-size:13px}
-.life-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.life-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-items:start}
+.life-grid .life-span{grid-column:1/-1}
 @media(max-width:620px){.life-grid{grid-template-columns:1fr}}
 .life-card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:20px 22px;transition:.3s}
 .life-card:hover{transform:translateY(-4px) rotate(-.6deg);box-shadow:var(--shadow)}
 .life-card .emoji{font-size:25px}
 .life-card b{display:block;margin:7px 0 2px;font-size:14.5px}
 .life-card span{color:var(--ink-soft);font-size:12.5px}
+.life-card .life-link{display:inline-block;margin-top:9px;color:var(--accent-deep);font-weight:700;font-size:12.5px;text-decoration:none;border-bottom:1.5px solid var(--accent)}
+.life-card .life-link:hover{color:var(--accent)}
+.life-card .dl-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+.life-card .dl-btn{font-size:11px;padding:5px 11px;border-radius:99px;background:rgba(var(--accent-rgb),.1);color:var(--accent-deep);border:1.2px dashed var(--accent);text-decoration:none;font-weight:700;transition:.2s;line-height:1.5}
+.life-card .dl-btn:hover{background:var(--accent);color:#fff;border-style:solid}
+.video-block{margin-top:26px}
+.video-head{margin-bottom:14px}
+.video-head b{font-size:15px;display:block}
+.video-head span{color:var(--ink-soft);font-size:12.5px}
+.video-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:620px){.video-gallery{grid-template-columns:1fr}}
+.vcard{margin:0;background:var(--card);border:2px solid var(--line);border-radius:16px;overflow:hidden;transition:.3s}
+.vcard:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.vcard video{display:block;width:100%;height:230px;object-fit:cover;background:#000}
+@media(max-width:620px){.vcard video{height:205px}}
+.vcard figcaption{padding:10px 12px;font-size:12.5px;color:var(--ink-soft);font-weight:700}
+
+.post-show{margin-top:18px;border-top:1px dashed var(--line);padding-top:16px}
+.post-show-head{margin-bottom:12px}
+.post-show-head b{font-size:14.5px;display:block}
+.post-show-head b::before{content:"📊 "}
+.post-show-head span{color:var(--ink-soft);font-size:11.5px}
+.post-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(max-width:620px){.post-list{grid-template-columns:1fr}}
+.post-item{display:flex;gap:10px;align-items:flex-start;background:rgba(var(--ink-rgb),.035);
+  border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;transition:.25s}
+.post-item:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent)}
+.post-rank{flex:none;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;
+  font:800 11.5px/22px "Zen Maru Gothic";text-align:center}
+.post-item:nth-child(-n+3) .post-rank{background:var(--accent-deep)}
+.post-body{min-width:0;flex:1}
+.post-title{font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.45;margin-bottom:5px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post-title a{color:inherit;text-decoration:none}
+.post-title a:hover{color:var(--accent-deep);text-decoration:underline}
+.post-meta{display:flex;flex-wrap:wrap;gap:5px 9px;align-items:center}
+.post-meta .cat{font-size:10.5px;background:var(--accent);color:#fff;border-radius:99px;padding:1px 8px;font-weight:700}
+.post-meta .m{font-size:11px;color:var(--ink-soft);font-family:"Zen Maru Gothic"}
+.post-meta .m b{color:var(--ink);font-weight:800}
 .postcard{position:relative;background:var(--card);border:2px solid var(--line);border-radius:18px;
   padding:38px 32px;text-align:center;overflow:hidden}
 .postcard::before{content:"";position:absolute;top:0;left:0;right:0;height:10px;
@@ -242,7 +333,7 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
 .gfooter nav a{font-size:12px;color:rgba(255,255,255,.75);text-decoration:none;letter-spacing:.1em}
 .gfooter nav a:hover{color:var(--accent)}
 
-#lightbox{position:fixed;inset:0;z-index:990;background:rgba(67,40,26,.78);display:flex;align-items:center;justify-content:center;
+#lightbox{position:fixed;inset:0;z-index:990;background:rgba(var(--ink-rgb),.78);display:flex;align-items:center;justify-content:center;
   padding:30px;opacity:0;pointer-events:none;transition:opacity .3s}
 #lightbox.show{opacity:1;pointer-events:auto}
 #lightbox img{max-height:88vh;max-width:92vw;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
@@ -258,7 +349,7 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
 .intro-welcome{font:700 12px/1 "Zen Maru Gothic";letter-spacing:.5em;color:var(--ink-soft);text-transform:uppercase}
 .intro-title{font:900 clamp(36px,8vw,62px)/1.15 "Zen Maru Gothic","Noto Sans SC";color:var(--ink);margin:16px 0 34px}
 .intro-track{position:relative;height:66px;width:min(430px,82vw);margin:0 auto;overflow:hidden}
-.intro-cat{position:absolute;left:0;top:6px;font-size:46px;line-height:1;filter:drop-shadow(0 4px 4px rgba(67,40,26,.25));
+.intro-cat{position:absolute;left:0;top:6px;font-size:46px;line-height:1;filter:drop-shadow(0 4px 4px rgba(var(--ink-rgb),.25));
   animation:catWalk 2.6s ease-in-out forwards}
 @keyframes catWalk{0%{left:-70px}100%{left:calc(100% - 26px)}}
 .intro-paw{position:absolute;bottom:0;font-size:18px;color:var(--accent);opacity:0;
@@ -283,7 +374,7 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
 <div class="intro" id="intro">
   <div class="intro-inner">
     <p class="intro-welcome">Coco's Island</p>
-    <h1 class="intro-title">椰子小岛</h1>
+    <h1 class="intro-title" id="introTitle">椰子小岛</h1>
     <div class="intro-track">
       <span class="intro-cat">🐈</span>
       <span class="intro-paw p1">🐾</span>
@@ -292,9 +383,9 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
       <span class="intro-paw p4">🐾</span>
       <span class="intro-paw p5">🐾</span>
     </div>
-    <p class="intro-tip">小猫带你上岛逛逛～</p>
+    <p class="intro-tip" id="introTip">小猫带你上岛逛逛～</p>
   </div>
-  <button class="intro-skip">点击任意处开始探索</button>
+  <button class="intro-skip" id="introSkip">点击任意处开始探索</button>
 </div>
 
 <header class="gheader">
@@ -308,7 +399,7 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
 <div class="gmenu" id="gmenu">
   <button class="gmenu-close" id="menuClose">CLOSE ✕</button>
   <nav id="menuNav"></nav>
-  <p class="gmenu-foot"><b>姜乐颖 coco</b>｜上海外国语大学 · 德语语言文学｜上海 · 可远程协作</p>
+  <p class="gmenu-foot" id="gmenuFoot"><b>姜乐颖 coco</b>｜上海外国语大学 · 德语语言文学｜上海 · 可远程协作</p>
 </div>
 
 <!-- ===== 3D 城镇场景 ===== -->
@@ -333,7 +424,7 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
   <div class="detail-inner" id="detailInner"></div>
   <footer class="gfooter">
     <div class="gfooter-in">
-      <div class="fbrand"><b>椰子小岛</b><small>© 2026 姜乐颖 coco · 一颗椰子的旅行路线</small></div>
+      <div class="fbrand" id="footBrand"><b>椰子小岛</b><small>© 2026 姜乐颖 coco · 一颗椰子的旅行路线</small></div>
       <nav id="footNav"></nav>
     </div>
   </footer>
@@ -348,18 +439,33 @@ body.detail-open .home-fab{opacity:1;pointer-events:auto;transform:translateX(-5
 </div>
 <div class="hover-label" id="hoverLabel"></div>
 
-<div id="lightbox"><img alt="作品放大预览"></div>
+<div id="lightbox"><img id="lbImg" alt="作品放大预览"></div>
 
 <script>
 /* ================= 数据 ================= */
 let lang='zh';
 const clubs=[
- {t:"上海外国语大学招生办公室",r:"主席",d:"2024.10–至今",
-  items:["团队管理与流程优化：领导 40+ 人团队优化协作流程，负责本科各阶段招生活动全周期管理",
-   "活动策划与效果提升：策划「牵手计划」、高考倒计时系列推送触达 10k+ 人次，带动新生咨询率提升 30%",
-   "宣传策略优化：通过数据驱动优化宣传策略，使招生信息覆盖率达到 95%",
-   "公众号全流程运营：独立负责招办公众号内容策划与全流程运营，涵盖创意构思、文案撰写及排版设计"],
-  works:[["🏅","主席任期 · 40+ 人团队管理证明"],["📈","「牵手计划」系列推送 · 触达 10k+ 人次"],["📰","招办公众号全流程运营作品集（策划 / 文案 / 排版）"],["📊","招生信息覆盖率 95% 数据成果"]]},
+ {t:"上海外国语大学招生办公室",r:"学生主席",d:"2024.10–至今",
+  items:["团队管理与成长路径：从干事成长为主席，统筹 40+ 人学生团队，负责新成员招办工作培训与分工带教，优化协作流程，覆盖本科各阶段招生活动全周期管理",
+   "公众号全流程运营：负责招办公众号内容策划与运营，账号定位由学校新闻转载转向招生资讯第一时间发布；独立完成选题构思、文案撰写、排版设计，运营节气海报 + 节气专栏、专业介绍 + 院系介绍、校友风采 + 优秀毕业生、高考倒计时专栏等栏目，系列推送触达 10k+ 人次",
+   "招生宣讲活动统筹：统筹「牵手计划」返校大学宣讲项目，赴各地参与招生宣讲；配合组织校园开放日等线下招生活动，完成活动策划、人员协调与现场执行，带动新生咨询率提升 30%",
+   "宣传物料与视觉支持：承担招生宣传各类 PPT 制作及海报、推文视觉设计，通过数据反馈优化宣传策略，使招生信息覆盖率达到 95%"],
+  works:[["🏅","主席任期 · 40+ 人团队管理证明"],["📈","「牵手计划」系列推送 · 触达 10k+ 人次"],["📰","招办公众号全流程运营作品集（策划 / 文案 / 排版）"],["📊","招生信息覆盖率 95% 数据成果"],["📝","推文 · 我的上外初体验（策划 / 编辑）","https://mp.weixin.qq.com/s/aPJoBunnE6LgBzDnNP6twg"],["📊","上海外国语大学 2027 招生宣传 PPT","assets-v1/sisu-2027-admissions.pptx"]],
+  posts:[
+   ["【重磅】上海外国语大学2026年本科招生八大亮点！","招生资讯",12014,801,102,40,"https://mp.weixin.qq.com/s/UCFOuKnYfe2RJ5BKH8AgfA"],
+   ["多少分，可以上上外？","招生资讯",8596,428,72,28,"https://mp.weixin.qq.com/s/zmVoKv-ZpQr5KLyPgAShtA"],
+   ["【重磅】上海外国语大学 2026 年本科招生计划公布！","招生资讯",7406,433,84,20,"https://mp.weixin.qq.com/s/Br1NFsgXxIS6pCQ74cinZw"],
+   ["收藏不迷路！上外2026本科招生咨询联系方式超全汇总！","招生资讯",6282,342,45,18,"https://mp.weixin.qq.com/s/o50bGpkPtebVjX73uJGQ-A"],
+   ["YES！恭喜你，被上外录取了！","招生资讯",6099,180,89,36,"https://mp.weixin.qq.com/s/1niKeEtSQazaaBJV1vj--w"],
+   ["毕业生风采 | 山东省济南外国语学校杨思媛：山外有山，我外有我","青年说",3261,97,34,23,"https://mp.weixin.qq.com/s/-dAwVWlqzwX6x18TulONtg"],
+   ["Meet SISU, Meet You｜2026 上外本科录取查询指南来啦！","招生资讯",3112,120,55,15,"https://mp.weixin.qq.com/s/Mr9mxyNXeRP_ssxisQL61g"],
+   ["HERE IS SISU！录取通知书陆续寄送中！","招生资讯",2694,62,69,30,"https://mp.weixin.qq.com/s/4zxdjD1kXflhR4SCEamTzA"],
+   ["高考倒计时 100 天｜上外学子伴你逐梦前行","高考倒计时",2644,130,69,40,"https://mp.weixin.qq.com/s/kPiFNCvi9J4IaBKiMJR7Hw"],
+   ["高考倒计时56天 | 与世界对话的56种可能","高考倒计时",1134,50,38,15,"https://mp.weixin.qq.com/s/Ot7zXqzilceJZu5zJdEWWg"],
+   ["高考倒计时6天｜儿童节，看点有“AI”的吧","高考倒计时",968,37,18,7,"https://mp.weixin.qq.com/s/-sHE06Smdp4iHaDNhzG-YQ"],
+   ["高考倒计时 50 天 | 在上外，做 “语” 众不同的自己","高考倒计时",854,48,44,21,"https://mp.weixin.qq.com/s/czpqAtlLKjQKzBXwy8Gh-g"],
+   ["春分 | 当日夜于此平分，世界于此相逢","节气节日",567,10,13,6,"https://mp.weixin.qq.com/s/Cqph0EvwCcWmXTGOZGSHlA"]
+  ]},
  {t:"德语系外联部",r:"干事",d:"2024.9–2025.6",
   items:["资源拓展与合作签约：协助完成与棕榈大道、清流教育等知名教育机构的合作对接，推动签约落地，成功引入专项资金 5000 元",
    "活动策划与执行：参与策划并执行 3 场大型留学主题讲座，通过精准宣传与流程优化，实现参与人数较往期增长 40%",
@@ -367,7 +473,7 @@ const clubs=[
   works:[["🤝","棕榈大道 / 清流教育合作签约成果 · 专项资金 5000 元"],["🎤","3 场留学主题讲座策划与执行物料"],["🎭","跨校德语音乐剧项目落地记录"]]}
 ];
 const projs=[
- {t:"Cedars AI 创新挑战赛",r:"七作美工",d:"2025.11–2025.6",
+ {t:"Cedars AI 创新挑战赛",r:"七作美工",d:"2025.11–2026.6",
   sub:"项目聚焦 AI 面试小程序的商业化应用，需通过设计清晰传达产品核心功能与市场价值",
   items:["独立完成商业企划书与路演 PPT 的美工设计与信息可视化",
    "运用可视化工具制作专业 PPT，突出产品创新点和专利技术",
@@ -386,7 +492,7 @@ const projs=[
   items:["负责公众号运营，生产求职指导类优质内容 20+ 篇；设计视觉物料 50+ 份，包括简历模板、面试技巧图解等",
    "建立高校就业服务社群，活跃用户达 800+；累计服务用户超 3000 人，用户满意度达 95%",
    "获得校级重点项目支持，二期优秀结项，进入三期发展阶段"],
-  works:[["🏆","校级重点项目支持 · 二期优秀结项证明"],["📜","一期结项证书","assets-v1/44863830-a88c-4726-a76f-1a62e8033515/xisuo-cert-phase1.jpg"],["📜","二期优秀结项证书","assets-v1/458543b0-017e-4a4c-814e-cf22b9db12d9/xisuo-cert-phase2.jpg"],["📝","求职指导类推文 20+ 篇"],["📝","西索小蓝书推文 · 我在西索小蓝书写的文章","https://mp.weixin.qq.com/s/DLK963k8L52j8EyvLXWjHQ"],["🎨","视觉物料 50+ 份（简历模板 / 面试技巧图解）"],["👥","就业服务社群 800+ 活跃用户 · 累计服务 3000+ 人"]]},
+  works:[["🏆","校级重点项目支持 · 二期优秀结项证明"],["📜","一期结项证书","assets-v1/44863830-a88c-4726-a76f-1a62e8033515/xisuo-cert-phase1.jpg"],["📜","二期优秀结项证书","assets-v1/458543b0-017e-4a4c-814e-cf22b9db12d9/xisuo-cert-phase2.jpg"],["📝","求职指导类推文 20+ 篇"],["📝","西索小蓝书推文 · 我在西索小蓝书写的文章","https://mp.weixin.qq.com/s/DLK963k8L52j8EyvLXWjHQ"],["📝","推文 · 下一站，世界｜出国交流分享（文案 / 排版）","https://mp.weixin.qq.com/s/h9FymQWNopG5Pee_cHF5pg"],["🎨","视觉物料 50+ 份（简历模板 / 面试技巧图解）"],["👥","就业服务社群 800+ 活跃用户 · 累计服务 3000+ 人"]]},
  {t:"个人公众号「美式间歇集」",r:"主理人 · 独立运营",d:"2025–至今",
   sub:"原创生活随笔与成长记录：从选题、文案到排版设计全部自主完成，每篇在看率均超过 5%",
   items:["选题与文案创作：以「淡淡的」生活美学与二十岁成长视角进行第一视角深度写作，形成独特文字风格",
@@ -448,29 +554,64 @@ const skills=[
   ["AI探索","AI工具 · 网站搭建 · 自主学习"],
   ["语言能力","英语 CET-4 / CET-6 均500+ · 德语专四通过"]
 ];
+const novelDownloads=[
+  ["assets-v1/novels/before-departure.docx","正文 · 《去远方之前》","Full novel · Before Departure","去远方之前.docx"],
+  ["assets-v1/novels/side-story-1.docx","番外 1 · 复合以后","Side story 1 · Back together","番外1-复合以后.docx"],
+  ["assets-v1/novels/side-story-2.docx","番外 2 · 骆知行不怎么发朋友圈","Side story 2 · Luo Zhixing rarely posts","番外2-骆知行不怎么发朋友圈.docx"],
+  ["assets-v1/novels/side-story-3.docx","番外 3 · 凌晨两点十三分","Side story 3 · 2:13 a.m.","番外3-凌晨两点十三分.docx"],
+  ["assets-v1/novels/side-story-4.docx","番外 4 · 第一次doi","Side story 4 · First time","番外4-第一次doi.docx"],
+  ["assets-v1/novels/side-story-5.docx","番外 5 · 我就一定要保持克制吗！","Side story 5 · Must I stay restrained?","番外5-我就一定要保持克制吗！.docx"],
+  ["assets-v1/novels/side-story-6.docx","番外 6 · 和异性的关系大挑战","Side story 6 · Relationship challenge","番外6-和异性的关系大挑战.docx"],
+  ["assets-v1/novels/side-story-7.docx","番外 7 · 朋友观察报告","Side story 7 · Friend observation report","番外7-朋友观察报告.docx"],
+  ["assets-v1/novels/essay-qingdao.docx","随笔 · 青岛是青青的岛，也是轻轻的岛","Essay · Qingdao, a green & gentle island","青岛是青青的岛，也是轻轻的岛.docx"]
+];
 const secrets=[
   ["🎤","现场追光","演唱会 · 应援设计 · 线下观演"],
   ["🎮","电竞航线","KPL · 王者荣耀 · 赛事观察"],
   ["🔍","解谜森林","探案游戏 · 剧情推理 · 影视作品"],
-  ["💞","虚拟旅人","乙女游戏 · 恋与深空（黎深好感度195）"]
+  ["💞","虚拟旅人","乙女游戏 · 恋与深空（黎深好感度195）"],
+  ["✍️","小说创作","长篇《去远方之前》· 七篇番外 · 持续写作中","https://kcniwc26vmq4.feishu.cn/wiki/QIZTwJtd8iuwFvkEKtRc7n7InGc",novelDownloads],
+  ["🎬","AI 影像","用 AI 生成视频 · 产品广告与创意短片"]
+];
+const kplVideos=[
+ ["assets-v1/videos/kpl-1106-jdg.mp4","assets-v1/videos/kpl-1106-jdg-poster.jpg","11.6 胜决 · JDG 呐喊"],
+ ["assets-v1/videos/kpl-1108-wb.mp4","assets-v1/videos/kpl-1108-wb-poster.jpg","11.8 败决 · WB 呐喊"],
+ ["assets-v1/videos/kpl-1110-mvp.mp4","assets-v1/videos/kpl-1110-mvp-poster.jpg","11.10 JDG vs WB · 无畏空空儿 MVP"],
+ ["assets-v1/videos/kpl-1111-moyang.mp4","assets-v1/videos/kpl-1111-moyang-poster.jpg","11.11 墨阳肘击"],
+ ["assets-v1/videos/kpl-1112-qingrong.mp4","assets-v1/videos/kpl-1112-qingrong-poster.jpg","11.12 清融海月"]
 ];
 
 /* ================= 英文数据 ================= */
 const clubsEn=[
- {t:"SISU Admissions Office",r:"Chair",d:"2024.10–present",
-  items:["Team & process optimization: led a 40+ team to streamline collaboration and run the full lifecycle of undergraduate admissions activities",
-   "Campaign planning & impact: planned the \"Hand-in-Hand\" program and the Gaokao countdown series, reaching 10k+ views and lifting inquiry rate by 30%",
-   "Data-driven strategy: optimized the promotion strategy, raising admissions info coverage to 95%",
-   "End-to-end WeChat operation: independently ran content planning and full-process operations — ideation, copywriting and layout design"],
-  works:[["🏅","Chair tenure · proof of leading a 40+ team"],["📈","\"Hand-in-Hand\" series · 10k+ reach"],["📰","Admissions WeChat portfolio (planning / copy / layout)"],["📊","95% admissions info coverage"]]},
+ {t:"SISU Admissions Office",r:"Student Chair",d:"2024.10–present",
+  items:["Team management & growth path: rose from member to Chair, overseeing a 40+ student team; responsible for new-member admissions-office training and task mentoring, optimizing collaboration workflows across the full lifecycle of undergraduate admissions",
+   "End-to-end WeChat operations: led content planning and operations, repositioning the account from reposting school news to publishing admissions news first; independently handled ideation, copywriting and layout design, running columns on solar-term posters & features, major & department introductions, alumni & outstanding-graduate spotlights and the Gaokao countdown series — posts reaching 10k+ views",
+   "Admissions outreach coordination: led the \"Hand-in-Hand\" high-school outreach talk project, traveling to various regions to deliver admissions talks; supported offline events such as campus open days — planning, staffing and on-site execution — lifting freshman inquiry rate by 30%",
+   "Promotional materials & visual support: produced admissions PPTs and visual design for posters and posts; refined the promotion strategy with data feedback, raising admissions info coverage to 95%"],
+  works:[["🏅","Chair tenure · 40+ team leadership"],["📈","\"Hand-in-Hand\" series · 10k+ reach"],["📰","Admissions WeChat portfolio (planning / copy / layout)"],["📊","95% admissions info coverage"],["📝","Post · My First SISU Experience (planning / editing)","https://mp.weixin.qq.com/s/aPJoBunnE6LgBzDnNP6twg"],["📊","SISU 2027 Admissions Presentation PPT","assets-v1/sisu-2027-admissions.pptx"]],
+  posts:[
+   ["【重磅】上海外国语大学2026年本科招生八大亮点！","Admissions",12014,801,102,40,"https://mp.weixin.qq.com/s/UCFOuKnYfe2RJ5BKH8AgfA"],
+   ["多少分，可以上上外？","Admissions",8596,428,72,28,"https://mp.weixin.qq.com/s/zmVoKv-ZpQr5KLyPgAShtA"],
+   ["【重磅】上海外国语大学 2026 年本科招生计划公布！","Admissions",7406,433,84,20,"https://mp.weixin.qq.com/s/Br1NFsgXxIS6pCQ74cinZw"],
+   ["收藏不迷路！上外2026本科招生咨询联系方式超全汇总！","Admissions",6282,342,45,18,"https://mp.weixin.qq.com/s/o50bGpkPtebVjX73uJGQ-A"],
+   ["YES！恭喜你，被上外录取了！","Admissions",6099,180,89,36,"https://mp.weixin.qq.com/s/1niKeEtSQazaaBJV1vj--w"],
+   ["毕业生风采 | 山东省济南外国语学校杨思媛：山外有山，我外有我","Youth Voices",3261,97,34,23,"https://mp.weixin.qq.com/s/-dAwVWlqzwX6x18TulONtg"],
+   ["Meet SISU, Meet You｜2026 上外本科录取查询指南来啦！","Admissions",3112,120,55,15,"https://mp.weixin.qq.com/s/Mr9mxyNXeRP_ssxisQL61g"],
+   ["HERE IS SISU！录取通知书陆续寄送中！","Admissions",2694,62,69,30,"https://mp.weixin.qq.com/s/4zxdjD1kXflhR4SCEamTzA"],
+   ["高考倒计时 100 天｜上外学子伴你逐梦前行","Gaokao Countdown",2644,130,69,40,"https://mp.weixin.qq.com/s/kPiFNCvi9J4IaBKiMJR7Hw"],
+   ["高考倒计时56天 | 与世界对话的56种可能","Gaokao Countdown",1134,50,38,15,"https://mp.weixin.qq.com/s/Ot7zXqzilceJZu5zJdEWWg"],
+   ["高考倒计时6天｜儿童节，看点有“AI”的吧","Gaokao Countdown",968,37,18,7,"https://mp.weixin.qq.com/s/-sHE06Smdp4iHaDNhzG-YQ"],
+   ["高考倒计时 50 天 | 在上外，做 “语” 众不同的自己","Gaokao Countdown",854,48,44,21,"https://mp.weixin.qq.com/s/czpqAtlLKjQKzBXwy8Gh-g"],
+   ["春分 | 当日夜于此平分，世界于此相逢","Solar Terms",567,10,13,6,"https://mp.weixin.qq.com/s/Cqph0EvwCcWmXTGOZGSHlA"]
+  ]},
  {t:"German Dept. External Liaison",r:"Officer",d:"2024.9–2025.6",
-  items:["Resource outreach & partnerships: coordinated deals with institutions like Palm Avenue and Qingliu Education, securing 5,000 RMB in funding",
+  items:["Resource outreach & partnerships: coordinated partnerships with education brands PalmDrive and Qingliu Education, securing 5,000 RMB in funding",
    "Event planning & execution: helped plan and run 3 large study-abroad talks, boosting attendance by 40% vs. prior terms",
    "Cross-campus projects: followed through on cross-campus German musical and other collaborations"],
-  works:[["🤝","Signed partnerships · 5,000 RMB funding"],["🎤","3 study-abroad talk materials"],["🎭","Cross-campus German musical records"]]}
+  works:[["🤝","PalmDrive / Qingliu Education partnership · 5,000 RMB funding"],["🎤","3 study-abroad talk materials"],["🎭","Cross-campus German musical records"]]}
 ];
 const projsEn=[
- {t:"Cedars AI Innovation Challenge",r:"Visual Designer (7th author)",d:"2025.11–2025.6",
+ {t:"Cedars AI Innovation Challenge",r:"Visual Designer (7th author)",d:"2025.11–2026.6",
   sub:"An AI-interview mini-program focused on commercial application; the design must clearly convey core functions and market value",
   items:["Independently handled the visual design and info-visualization for the business plan and pitch deck",
    "Used visualization tools to build a professional deck that highlights product innovation and patented tech",
@@ -484,49 +625,71 @@ const projsEn=[
    ["📜","Patent · multi-dimensional interview evaluation","assets-v1/594d3e85-8af6-490e-ae73-82ebd031baec/面向求职训练的多维面试表现评估方法及平台.pdf"],
    ["📜","Patent · personalized career-path recommendation","assets-v1/6a0f73b0-5ee1-4f83-a55e-849bc3dae00a/基于用户画像的个性化职业发展路径推荐方法.pdf"],
    ["📱","AI interview mini-program prototype"]]},
- {t:"Xisuo Career · Innovation Program",r:"Member",d:"2025.3–present",
+ {t:"Xisuo Little Blue Book · Career Show Innovation Program",r:"Member",d:"2025.3–present",
   sub:"A one-stop job-seeking support platform for university students",
   items:["Ran the official account, producing 20+ career-guide posts and 50+ visual assets (resume templates, interview-skill infographics)",
    "Built a campus employment community with 800+ active users; served 3,000+ students at 95% satisfaction",
-   "Granted university key-project support with an outstanding Phase-2 completion; now in Phase 3"],
-  works:[["🏆","University key-project support · Phase-2 completion"],["📜","Phase-1 certificate","assets-v1/44863830-a88c-4726-a76f-1a62e8033515/xisuo-cert-phase1.jpg"],["📜","Phase-2 outstanding certificate","assets-v1/458543b0-017e-4a4c-814e-cf22b9db12d9/xisuo-cert-phase2.jpg"],["📝","20+ career-guide posts"],["📝","My posts on Xisuo","https://mp.weixin.qq.com/s/DLK963k8L52j8EyvLXWjHQ"],["🎨","50+ visual assets (resume templates / infographics)"],["👥","800+ active users · 3,000+ served"]]},
- {t:"Personal WeChat \"Iced American Interval\"",r:"Founder · solo operation",d:"2025–present",
-  sub:"Original life essays and a growth journal; fully self-produced from ideation to layout, with every post exceeding a 5% recommend rate",
-  items:["Ideation & writing: first-person, in-depth writing on the \"light\" aesthetic of daily life from a twenty-something's view",
+   "Won university key-project support; completed Phase 2 with distinction; now in Phase 3"],
+  works:[["🏆","University key-project support · Phase-2 with distinction"],["📜","Phase-1 certificate","assets-v1/44863830-a88c-4726-a76f-1a62e8033515/xisuo-cert-phase1.jpg"],["📜","Phase-2 outstanding certificate","assets-v1/458543b0-017e-4a4c-814e-cf22b9db12d9/xisuo-cert-phase2.jpg"],["📝","20+ career-guide posts"],["📝","My posts on Xisuo","https://mp.weixin.qq.com/s/DLK963k8L52j8EyvLXWjHQ"],["📝","Post · Next Stop, the World — overseas-exchange sharing (copy / layout)","https://mp.weixin.qq.com/s/h9FymQWNopG5Pee_cHF5pg"],["🎨","50+ visual assets (resume templates / infographics)"],["👥","800+ active users · 3,000+ served"]]},
+ {t:"Personal WeChat \"Iced Americano Interval\"",r:"Founder · solo operation",d:"2025–present",
+  sub:"Original life essays and a growth journal; fully self-produced from ideation to layout, with every post exceeding a 5% wow rate",
+  items:["Ideation & writing: first-person, in-depth writing on a gentle, understated life aesthetic from a twenty-something's perspective",
    "Layout & visual design: self-produced all layout and visual design, keeping a consistent, soothing aesthetic",
-   "Performance: every post exceeds a 5% recommend rate with steady reader engagement"],
-  works:[["📝","Post · Right now, everything feels light","https://mp.weixin.qq.com/s?__biz=Mzk2NDQzMDA5Mg==&mid=2247483689&idx=1&sn=fc0704cccbad2adb3a5a5d05d029763d&chksm=c565bd97026367b995b130678773919b8f0b77288e5873c226637ef1c6d0872d0137590c9bbe&mpshare=1&scene=1&srcid=0827wRCtG3SOUFidB7NV8qnP&sharer_shareinfo=f91efa38fd08b442c6b856ad51f92fa3&sharer_shareinfo_first=f91efa38fd08b442c6b856ad51f92fa3#rd"],["🕰","Post · Twenty: unlocking my own timeline","https://mp.weixin.qq.com/s?__biz=Mzk2NDQzMDA5Mg==&mid=2247483722&idx=1&sn=bcda9aa94639a5ee406ef801eb487580&chksm=c5d02b65e2191a8bcb842f6792db961ffc537c697e43f2a6e55ff54dea8ddd2982441a745a7&mpshare=1&scene=1&srcid=0827fGvSh4p1wKa538aK686d&sharer_shareinfo=2a2c301e62a51e85825ad51a25f16927&sharer_shareinfo_first=2a2c301e62a51e85825ad51a25f16927#rd"],["🌀","Post · A slow week gifted by the typhoon","https://mp.weixin.qq.com/s?__biz=Mzk2NDQzMDA5Mg==&mid=2247483752&idx=1&sn=5e29ec461b9537c1c4668d960b19853f&chksm=c58d99d0364ac519311776d725d2fd7f7c4a6ca697e43f2a6e55ff54dea8ddd2982441a745a7&mpshare=1&scene=1&srcid=0827GxJX7YovgRKtvSVr0mTr&sharer_shareinfo=cb95a411fd6e0b1a6c7952d7cea6745d&sharer_shareinfo_first=cb95a411fd6e0b1a6c7952d7cea6745d#rd"],["📈","Every post exceeds 5% recommend rate · copy + layout all by me"]]}
+   "Performance: every post exceeds a 5% wow rate with steady reader engagement"],
+  works:[["📝","Post · Right now, everything feels light","https://mp.weixin.qq.com/s?__biz=Mzk2NDQzMDA5Mg==&mid=2247483689&idx=1&sn=fc0704cccbad2adb3a5a5d05d029763d&chksm=c565bd97026367b995b130678773919b8f0b77288e5873c226637ef1c6d0872d0137590c9bbe&mpshare=1&scene=1&srcid=0827wRCtG3SOUFidB7NV8qnP&sharer_shareinfo=f91efa38fd08b442c6b856ad51f92fa3&sharer_shareinfo_first=f91efa38fd08b442c6b856ad51f92fa3#rd"],["🕰","Post · Twenty: unlocking my own timeline","https://mp.weixin.qq.com/s?__biz=Mzk2NDQzMDA5Mg==&mid=2247483722&idx=1&sn=bcda9aa94639a5ee406ef801eb487580&chksm=c5d02b65e2191a8bcb842f6792db961ffc537c697e43f2a6e55ff54dea8ddd2982441a745a7&mpshare=1&scene=1&srcid=0827fGvSh4p1wKa538aK686d&sharer_shareinfo=2a2c301e62a51e85825ad51a25f16927&sharer_shareinfo_first=2a2c301e62a51e85825ad51a25f16927#rd"],["🌀","Post · A slow week gifted by the typhoon","https://mp.weixin.qq.com/s?__biz=Mzk2NDQzMDA5Mg==&mid=2247483752&idx=1&sn=5e29ec461b9537c1c4668d960b19853f&chksm=c58d99d0364ac519311776d725d2fd7f7c4a6ca697e43f2a6e55ff54dea8ddd2982441a745a7&mpshare=1&scene=1&srcid=0827GxJX7YovgRKtvSVr0mTr&sharer_shareinfo=cb95a411fd6e0b1a6c7952d7cea6745d&sharer_shareinfo_first=cb95a411fd6e0b1a6c7952d7cea6745d#rd"],["📈","Every post exceeds 5% wow rate · copy + layout all by me"]]}
+];
+const internsEnGallery=[
+ ["assets-v1/960f7482-dc75-4c78-8a12-e007d5c32a53/weibo-poster-13.png","Solar-term poster · Winter Solstice"],
+ ["assets-v1/1ade8c5f-f183-4587-97b7-129b844d8c31/weibo-poster-9.webp","Solar-term poster · Start of Winter"],
+ ["assets-v1/60c4afe7-6fef-45b3-8d20-bb2756022adf/weibo-poster-10.png","Solar-term poster · Minor Snow"],
+ ["assets-v1/476094f9-6011-4bda-b14c-1ab4365165ef/weibo-poster-12.png","Solar-term poster · Major Snow"],
+ ["assets-v1/535831ca-fa8b-4ce5-97ee-8eb8b5064f40/weibo-poster-14.webp","Festival poster · Dragon Boat Festival"],
+ ["assets-v1/e3e30adf-3300-4cfb-9914-f20df26a6d8f/weibo-poster-15.webp","Solar-term poster · Summer Solstice"],
+ ["assets-v1/337c1801-0a7f-444f-a6e6-36645f3502a5/weibo-poster-8.webp","Shanghai Weibo · October monthly report"],
+ ["assets-v1/a70bfe63-37d3-4342-815d-5727d7638613/weibo-poster-11.png","Shanghai Weibo · November monthly report"],
+ ["assets-v1/f0eb8f3f-bf65-41f2-a6be-fc2a51d30547/weibo-poster-16.webp","Shanghai Weibo · April monthly report"],
+ ["assets-v1/06bfc42d-2bf9-4349-a32c-1f72825bdcf7/weibo-poster-17.webp","Shanghai Weibo · May monthly report"],
+ ["assets-v1/eb6ed21c-b58b-4fc9-824b-32a73efe19aa/wb-20251222181330_22.webp","Festival poster · New Year's Day"],
+ ["assets-v1/47b560f1-f427-4757-8236-a2c0916926d8/wb-20260102130552_23.webp","Solar-term poster · Minor Cold"],
+ ["assets-v1/563f24d0-bb89-4c3b-a59c-3ee069b953e6/wb-20260102130552_24.webp","Solar-term poster · Major Cold"],
+ ["assets-v1/9df1a251-a553-4ac3-9b9d-1e21a9e7e0e1/wb-20260102130552_25.webp","Solar-term poster · Start of Spring"],
+ ["assets-v1/ca4ee48e-6303-439b-88c9-260eb23267f5/wb-20260407104826_84.webp","Solar-term poster · Grain Rain"],
+ ["assets-v1/90432c05-d363-40a8-abaf-d2597b26df3f/wb-20260430130803_88.webp","Solar-term poster · Grain in Ear"],
+ ["assets-v1/88e3126d-6534-408c-bc32-a6f8947f77c0/wb-20260430130803_89.webp","Solar-term poster · Start of Summer"],
+ ["assets-v1/583497e0-1657-431b-a376-ba5d847eee52/wb-20260430130803_90.webp","Solar-term poster · Grain Buds"],
+ ["assets-v1/faddeefe-f6a7-408c-a5cc-51495e8ee1ef/wb-20260324145207_75.webp","Recruitment infographic · Weibo Campus · Shanghai"],
+ ["assets-v1/78730c5d-0e64-470d-a5d1-f2c6bc80bb3d/wb-20260406202055_80.webp","Shanghai Weibo · March monthly report"]
 ];
 const internsEn=[
  {d:"2026.2–2026.9",t:"DaoFa Research Institute",r:"New-Media Operations",
   tasks:["End-to-end WeChat operations: independently optimized article layout and proposed conversion-rate strategies via data analysis",
    "Visual asset management: coordinated cover-image resources and handled copyright authorization for UGC materials",
    "Cross-platform distribution & tracking: executed multi-platform distribution and built a data-tracking system to lift CTR and conversion"],
-  works:["10% lift in content reach","WeChat layout portfolio","Cover-image authorization system","Cross-platform tracking sheets"]},
+  works:["10% improvement in content reach","WeChat layout optimization portfolio","Cover image copyright & authorization system","Cross-platform data tracking sheets"]},
  {d:"2026.1–2026.4",t:"HALARA",r:"HR-TA Intern",
   tasks:["Recruiting standardization: helped build campus-offer aggregation SOPs and independently wrote an HR intern onboarding landing SOP",
    "End-to-end recruiting: followed through on campus/social/intern hiring, ran pretalk rounds and coordinated candidate communication",
    "Multi-role screening: covered ops, logistics and more via precise résumé reviews and first-round screening"],
-  works:["20% faster recruiting","Campus-offer aggregation SOP","HR intern onboarding SOP","20+ successful hires"]},
+  works:["20% improvement in recruiting efficiency","Campus recruiting offer aggregation SOP","HR intern onboarding & landing SOP","20+ candidates successfully onboarded"]},
  {d:"2025.10–2026.5",t:"Weibo",r:"Campus Ambassador",
   tasks:["Visual design support: produced solar-term posters and monthly reports for the campus account using PS/AI",
    "Content operations: participated in daily content planning, topic selection and layout optimization"],
-  works:["15+ designs per month","Solar-term posters & monthly reports","25% lift in engagement"],
-  gallery:interns[2].gallery},
+  works:["Consistently produce 15+ designs per month","Solar-term poster & monthly report series","25% improvement in account engagement"],
+  gallery:internsEnGallery},
  {d:"2025.8–2025.11",t:"Qingliu Study-Abroad Education",r:"New-Media Operations Intern",
   tasks:["Content conversion & deep writing: mined core highlights from live drafts, ran follow-up interviews with guests, and rewrote posts in first person",
    "Multi-platform operations: independently produced 20+ Xiaohongshu notes per month to attract potential users",
    "Visual design & branding: used Canva and similar tools to keep brand visuals consistent"],
-  works:["10k+ clicks on a single post","30% lift in engagement","20+ Xiaohongshu notes / month · 500+ users","100+ visual assets"]},
+  works:["10k+ clicks on a single WeChat post","30% improvement in user engagement","20+ Xiaohongshu notes / month · attracted 500+ potential users","100+ visual assets produced"]},
  {d:"2025.5–2025.7",t:"Waiyuzhou",r:"Marketing & Editorial Intern",
   tasks:["Creator outreach & interview planning: invited 50+ bloggers via Xiaohongshu/Weibo and planned interview topics and pitches",
    "Content & editing: independently wrote and edited interview features and a series of high-quality WeChat posts",
    "Distribution & growth: helped optimize distribution and track channel performance"],
-  works:["50+ invited bloggers","Interview-feature series","40% faster content updates","2,000+ monthly followers"]}
+  works:["Invited 50+ renowned bloggers","Interview-feature WeChat post series","40% improvement in content update efficiency","2,000+ new followers gained per month"]}
 ];
 const skillsEn=[
   ["New-Media Content","WeChat · Xiaohongshu · posts · content planning"],
-  ["Operations & Delivery","event planning · teamwork · process optimization · user ops"],
+  ["Operations & Project Execution","event planning · teamwork · process optimization · user ops"],
   ["Visual Design","PS · AI · Canva · page design"],
   ["AI Exploration","AI tools · website building · self-learning"],
   ["Languages","English CET-4/6 (500+) · German Major Test Band 4"]
@@ -534,8 +697,23 @@ const skillsEn=[
 const secretsEn=[
   ["🎤","Live Shows","concerts · fan merch design · offline gigs"],
   ["🎮","Esports","KPL · Honor of Kings · match watching"],
-  ["🔍","Mystery Forest","puzzle games · story deduction · films & dramas"],
-  ["💞","Virtual Traveler","otome games · Love and Deepspace (Li Shen 195 affection)"]
+  ["🔍","Mystery Forest","puzzle games · mystery deduction · films & dramas"],
+  ["💞","Virtual Traveler","otome games · Love and Deepspace (Li Shen 195 affection)"],
+  ["✍️","Novel Writing","Long-form novel 'Before Departure' · 7 side stories · ongoing","https://kcniwc26vmq4.feishu.cn/wiki/QIZTwJtd8iuwFvkEKtRc7n7InGc",novelDownloads],
+  ["🎬","AI Filmmaking","AI-generated videos · product ads & creative shorts"]
+];
+const kplVideosEn=[
+ ["assets-v1/videos/kpl-1106-jdg.mp4","assets-v1/videos/kpl-1106-jdg-poster.jpg","Nov 6 · Winner's Final · JDG cheers"],
+ ["assets-v1/videos/kpl-1108-wb.mp4","assets-v1/videos/kpl-1108-wb-poster.jpg","Nov 8 · Loser's Final · WB cheers"],
+ ["assets-v1/videos/kpl-1110-mvp.mp4","assets-v1/videos/kpl-1110-mvp-poster.jpg","Nov 10 · JDG vs WB · Wuwei Kongkong'er MVP"],
+ ["assets-v1/videos/kpl-1111-moyang.mp4","assets-v1/videos/kpl-1111-moyang-poster.jpg","Nov 11 · Mo Yang elbow play"],
+ ["assets-v1/videos/kpl-1112-qingrong.mp4","assets-v1/videos/kpl-1112-qingrong-poster.jpg","Nov 12 · Qingrong Haimoon"]
+];
+const aiFilms=[
+ ["assets-v1/videos/ai-film-1.mp4","assets-v1/videos/ai-film-1-poster.png","蓝色毛绒玩偶 · AI 产品广告片（豆包 AI 生成）"]
+];
+const aiFilmsEn=[
+ ["assets-v1/videos/ai-film-1.mp4","assets-v1/videos/ai-film-1-poster.png","Blue plush toy · AI product commercial (Doubao AI)"]
 ];
 
 /* ================= 板块配置 ================= */
@@ -545,16 +723,16 @@ const BOARDS={
   endesc:'German major at SISU (2024→2028). Led a campus organization and worked in brand content operations; explored new-media creation, design, project management and HR.'},
  club:{en:'Club',zh:'社团经历',tag:'岛上最早扎根的<br>两棵椰子树',entag:'The two earliest coconut trees<br>rooted on this island',
   desc:'上外招生办公室主席：带领 40+ 人团队，推送触达 10k+ 人次；德语系外联部干事：促成机构合作签约，引入专项资金 5000 元。',
-  endesc:'Chair of the SISU Admissions Office: led a 40+ team with 10k+ reach; German Dept. Liaison Officer: secured partnerships and 5,000 RMB in funding.'},
+  endesc:'Student Chair of the SISU Admissions Office: led a 40+ team with 10k+ reach; German Dept. Liaison Officer: secured partnerships and 5,000 RMB in funding.'},
  proj:{en:'Project',zh:'项目经历',tag:'亲手搭起来的<br>三座小码头',entag:'Three little docks<br>I built with my own hands',
   desc:'Cedars AI 美工设计（4 项专利 · 校级二等奖）；西索小蓝书大创优秀结项，服务 3000+ 人；公众号「美式间歇集」主理人。',
-  endesc:'Visual design for Cedars AI (4 patents · university second prize); Xisuo innovation program (served 3,000+); founder of the WeChat account "Iced American Interval".'},
+  endesc:'Visual design for Cedars AI (4 patents · university second prize); Xisuo Little Blue Book innovation program (served 3,000+); founder of the WeChat account "Iced Americano Interval".'},
  intern:{en:'Internship',zh:'实习经历',tag:'出海远航的<br>五段航线',entag:'Five routes<br>sailing out to sea',
   desc:'刀法研究所、HALARA、微博校园大使、清流留学教育、外语宙——从新媒体运营到 HR 招聘执行，五段航线各有收获。',
   endesc:'DaoFa Institute, HALARA, Weibo Campus Ambassador, Qingliu Education, Waiyuzhou — from new-media operations to HR recruiting, five rewarding routes.'},
  skills:{en:'Skills',zh:'技能工具箱',tag:'随身携带的<br>一把瑞士军刀',entag:'A Swiss army knife<br>I always carry',
   desc:'新媒体内容创作 · 运营与项目推进 · 视觉设计（PS / AI / Canva）· AI 探索 · 英语 CET-4/6 与德语专四。',
-  endesc:'New-media content creation · operations & delivery · visual design (PS/AI/Canva) · AI exploration · English CET-4/6 & German Major Test Band 4.'},
+  endesc:'New-media content creation · operations & project execution · visual design (PS/AI/Canva) · AI exploration · English CET-4/6 & German Major Test Band 4.'},
  life:{en:'Off Island',zh:'岛外生活',tag:'退潮之后<br>我也去别的海域玩',entag:'When the tide goes out<br>I wander other seas',
   desc:'现场追光：演唱会与应援设计；电竞航线：王者荣耀巅峰赛 1900 分；解谜森林：探案游戏与悬疑剧；虚拟旅人：乙游剧情。',
   endesc:'Live shows: concerts & fan-merch design; esports: Honor of Kings peak tier 1900; mystery: puzzle games & suspense dramas; virtual traveler: otome games.'},
@@ -588,13 +766,37 @@ function setBoard(key){
 setBoard('club');
 
 /* 中英文切换 */
+function relangUI(){
+  const L=lang==='en';
+  const set=(id,zh,en)=>{const el=document.getElementById(id);if(el)el.textContent=L?en:zh;};
+  set('introTitle','椰子小岛','Coconut Island');
+  set('introTip','小猫带你上岛逛逛～','The cat will show you around the island～');
+  set('introSkip','点击任意处开始探索','Click anywhere to start exploring');
+  const gf=document.getElementById('gmenuFoot');
+  if(gf)gf.innerHTML=L?'<b>Leying (Coco)</b>｜Shanghai International Studies University · German Language & Literature｜Shanghai · remote-friendly':'<b>姜乐颖 coco</b>｜上海外国语大学 · 德语语言文学｜上海 · 可远程协作';
+  set('dragHint','🖱️ 拖一拖，转着看这座岛','🖱️ Drag to look around the island');
+  const fb=document.getElementById('footBrand');
+  if(fb)fb.innerHTML=L?'<b>Coconut Island</b><small>© 2026 Leying Coco · a coconut\'s travel route</small>':'<b>椰子小岛</b><small>© 2026 姜乐颖 coco · 一颗椰子的旅行路线</small>';
+  const sv=+localStorage.getItem('coco-island-voyage')||0;
+  const vm=document.getElementById('voyageMsg');
+  if(vm)vm.textContent=L?`🏝️ Last time you drifted across ${sv}% of the island`:`🏝️ 上次你漂流到了全岛 ${sv}% 的海域`;
+  const db=document.getElementById('dayBtn');if(db)db.title=L?'Toggle day / night':'切换白天 / 夜晚';
+  const lb2=document.getElementById('langBtn');if(lb2)lb2.title=L?'Switch to 中文':'切换中文 / English';
+  const mb=document.getElementById('musicBtn');if(mb)mb.title=L?'Play / pause music':'播放 / 暂停音乐';
+  const mv=document.getElementById('musicVol');if(mv)mv.title=L?'Music volume':'音乐音量';
+  const li=document.getElementById('lbImg');if(li)li.alt=L?'Work preview zoom':'作品放大预览';
+  document.title=L?'Leying Coco — Portfolio':'姜乐颖-coco-resume';
+  const md=document.querySelector('meta[name="description"]');if(md)md.content=L?'Leying (Coco) — Coco\'s Island, a new-media creator portfolio':'姜乐颖 coco 的椰子小岛——新媒体内容创作者的个人作品集';
+}
 function setLang(l){
   lang=l==='en'?'en':'zh';
   document.getElementById('langBtn').textContent=lang==='en'?'中':'EN';
+  relangUI();
   renderNav();
   if(curPage){openPage(curPage)}else{setBoard(lastBoard)}
   if(window.__relang)window.__relang();
 }
+relangUI();
 document.getElementById('langBtn').onclick=()=>{setLang(lang==='en'?'zh':'en');sfx('tap');};
 
 /* ================= 详情渲染 ================= */
@@ -602,13 +804,26 @@ function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','
 function workChips(ws){
   if(!ws||!ws.length)return'';
   return `<div class="works">${ws.map(w=>{
-    const [e,txt,link]=w;
-    return link?`<a href="${esc(link)}" target="_blank" rel="noopener">${e} ${esc(txt)}</a>`:`<span>${e} ${esc(txt)}</span>`;
+    let e='',txt=w,link;
+    if(Array.isArray(w)){[e,txt,link]=w;}
+    const label=(e?e+' ':'')+esc(txt);
+    return link?`<a href="${esc(link)}" target="_blank" rel="noopener">${label}</a>`:`<span>${label}</span>`;
   }).join('')}</div>`;
+}
+function postShow(ps){
+  const L=lang==='en';
+  return `<div class="post-show">
+    <div class="post-show-head"><b>${L?'Top WeChat Posts · H1 2026':'2026 上半年 · 爆款推文榜单'}</b><span>${L?'Highlight metrics from 138 posts · click a title to read the original · 20-day window':'138 篇推文中的高光数据 · 点击标题可跳转原文 · 20 天阅读口径'}</span></div>
+    <div class="post-list">${ps.map((p,i)=>{
+      const [t,cat,v,f,l,w,lnk]=p;
+      const titleEl=lnk?`<a href="${esc(lnk)}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t);
+      return `<div class="post-item"><span class="post-rank">${i+1}</span><div class="post-body"><div class="post-title">${titleEl}</div><div class="post-meta"><span class="cat">${esc(cat)}</span><span class="m">👁 <b>${v}</b></span><span class="m">🔁 <b>${f}</b></span><span class="m">❤ <b>${l}</b></span><span class="m">👀 <b>${w}</b></span></div></div></div>`;
+    }).join('')}</div>
+  </div>`;
 }
 const clubCard=x=>`<article class="card reveal">
   <div class="card-head"><h3>${esc(x.t)}</h3><span class="role">${esc(x.r)}</span><span class="date">${esc(x.d)}</span></div>
-  <ul>${x.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>${workChips(x.works)}</article>`;
+  <ul>${x.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>${workChips(x.works)}${x.posts?postShow(x.posts):''}</article>`;
 const projCard=x=>`<article class="card reveal">
   <div class="card-head"><h3>${esc(x.t)}</h3><span class="role">${esc(x.r)}</span><span class="date">${esc(x.d)}</span></div>
   ${x.sub?`<p class="sub">${esc(x.sub)}</p>`:''}
@@ -618,8 +833,19 @@ const internCard=x=>`<article class="card reveal">
   <ul>${x.tasks.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>${workChips(x.works||[])}
   ${x.gallery?`<div class="gallery">${x.gallery.map(g=>`<figure data-src="${esc(g[0])}"><img src="${esc(g[0])}" alt="${esc(g[1])}" loading="lazy"><figcaption>${esc(g[1])}</figcaption></figure>`).join('')}</div>`:''}</article>`;
 
+const wallTiles=[
+ ['assets-v1/about/daily-birthday.jpg',200,0.5],
+ ['assets-v1/about/daily-cafe.jpg',235,-0.5],['assets-v1/about/daily-mall.jpg',195,1],
+ ['assets-v1/about/daily-car.jpg',215,-1],['assets-v1/about/daily-banner.jpg',240,0.5],
+ ['assets-v1/about/daily-hood.jpg',225,-0.5],['assets-v1/about/casual-plush.jpg',205,1],
+ ['assets-v1/about/casual-sunset.jpg',230,-1]
+].map(([s,h,r])=>`<figure class="wall-tile" data-src="${s}" style="--h:${h}px;--r:${r}deg"><img src="${s}" alt="" loading="lazy"></figure>`).join('');
+const portraitBlock=c=>`<div class="about-portrait reveal"><figure class="polaroid" data-src="assets-v1/about/portrait.jpg"><img src="assets-v1/about/portrait.jpg" alt="${c}"><div class="cap">${c}</div></figure></div>`;
+const wallBlock=t=>`<div class="photo-wall reveal"><div class="wall-scroll" id="wallScroll"><div class="wall-track">${wallTiles}</div></div><div class="wall-hint">${t}</div></div>`;
 const PAGES={
   about:{html:()=> lang==='en'?`
+    ${portraitBlock('Leying · 姜乐颖')}
+    ${wallBlock('scroll to explore my days')}
     <div class="msg reveal">
       <p>Hi, I'm <span class="hl">Leying</span>.</p>
       <p>Like a coconut — quiet on the outside, full of ideas inside. Since college I've tried many roles: leading a campus organization, working in brand content operations, exploring new-media creation, design, project management and HR.</p>
@@ -631,8 +857,11 @@ const PAGES={
     <div class="edu-band reveal">
       <span class="y">2024<span class="arrow">→</span>2028</span>
       <span><b>Shanghai International Studies University</b><small>German Language & Literature · BA · 2024.9 – 2028.6</small></span>
-    </div>`:
-    `<div class="msg reveal">
+    </div>
+    `:
+    `${portraitBlock('姜乐颖 · Leying')}
+    ${wallBlock('滑动看看我的日常')}
+    <div class="msg reveal">
       <p>你好，我是<span class="hl">乐颖</span>。</p>
       <p>像一颗椰子——外表安静，内里装着很多想法。大学以来，我不断尝试不同的角色：做过校园组织的负责人，也参与过品牌内容运营；尝试过新媒体创作，也探索过设计、项目管理与人力资源。</p>
       <p>这些经历让我逐渐找到自己的方向：<span class="hl">用内容连接用户，用设计表达想法，用行动把创意落地</span>。这里是一条属于我的探索路线——记录经历，也收藏热爱；展示能力，也分享生活。</p>
@@ -643,12 +872,13 @@ const PAGES={
     <div class="edu-band reveal">
       <span class="y">2024<span class="arrow">→</span>2028</span>
       <span><b>上海外国语大学</b><small>德语语言文学 · 本科 · 2024.9 – 2028.6</small></span>
-    </div>`},
+    </div>
+    `},
   club:{html:()=>(lang==='en'?clubsEn:clubs).map(clubCard).join('')},
   proj:{html:()=>(lang==='en'?projsEn:projs).map(projCard).join('')},
   intern:{html:()=>(lang==='en'?internsEn:interns).map(internCard).join('')},
   skills:{html:()=>(lang==='en'?skillsEn:skills).map(s=>`<div class="skill-row reveal"><b>${esc(s[0])}</b><span>${esc(s[1])}</span></div>`).join('')},
-  life:{html:()=>`<div class="life-grid reveal">${(lang==='en'?secretsEn:secrets).map(s=>`<div class="life-card"><span class="emoji">${s[0]}</span><b>${esc(s[1])}</b><span>${esc(s[2])}</span></div>`).join('')}</div>`},
+  life:{html:()=>{const v=lang==='en'?kplVideosEn:kplVideos,vt=lang==='en'?'KPL Match Edits':'KPL 赛事剪辑',vs=lang==='en'?'Clips I edited during the 2026 KPL season — the moments that made me jump off my seat.':'2026 KPL 赛季期间剪的赛场切片——那些让我从椅子上跳起来的瞬间。',af=lang==='en'?aiFilmsEn:aiFilms,aft=lang==='en'?'AI Films':'AI 影像',afs=lang==='en'?'Short videos I created with AI — product commercials & creative clips.':'用 AI 生成的短视频——产品广告与创意片段。';const gal=arr=>`<div class="video-gallery">${arr.map(x=>`<figure class="vcard"><video controls preload="metadata" playsinline poster="${esc(x[1])}" src="${esc(x[0])}"></video><figcaption>${esc(x[2])}</figcaption></figure>`).join('')}</div>`;const vBlock=`<div class="video-block life-span"><div class="video-head"><b>🎮 ${esc(vt)}</b><span>${esc(vs)}</span></div>${gal(v)}</div>`;const aBlock=`<div class="video-block life-span"><div class="video-head"><b>🎬 ${esc(aft)}</b><span>${esc(afs)}</span></div>${gal(af)}</div>`;return `<div class="life-grid reveal">${(lang==='en'?secretsEn:secrets).map((s,i)=>`<div class="life-card"><span class="emoji">${s[0]}</span><b>${esc(s[1])}</b><span>${esc(s[2])}</span>${s[3]?`<a class="life-link" href="${esc(s[3])}" target="_blank" rel="noopener">${lang==='en'?'Read →':'阅读 →'}</a>`:''}${s[4]?`<div class="dl-list">${s[4].map(d=>`<a class="dl-btn" href="${esc(d[0])}" download="${esc(d[3])}">${esc(d[lang==='en'?2:1])}</a>`).join('')}</div>`:''}</div>${i===1?vBlock:''}${i===5?aBlock:''}`).join('')}</div>`}},
   contact:{html:()=> lang==='en'?`
     <div class="postcard reveal">
       <span class="stamp">🐾</span>
@@ -710,7 +940,7 @@ function closeMenu(){gmenu.classList.remove('open')}
 const bar=document.querySelector('#prog i');
 const KEY='coco-island-voyage';
 const saved=+localStorage.getItem(KEY)||0;
-if(saved>5){const va=document.createElement('p');va.className='hello';va.style.cssText='margin-top:10px;color:var(--accent-deep);letter-spacing:.05em;text-transform:none;font-size:11px';va.textContent=`🏝️ 上次你漂流到了全岛 ${saved}% 的海域`;document.getElementById('infoCard').appendChild(va)}
+if(saved>5){const va=document.createElement('p');va.id='voyageMsg';va.className='hello';va.style.cssText='margin-top:10px;color:var(--accent-deep);letter-spacing:.05em;text-transform:none;font-size:11px';va.textContent=lang==='en'?`🏝️ Last time you drifted across ${saved}% of the island`:`🏝️ 上次你漂流到了全岛 ${saved}% 的海域`;document.getElementById('infoCard').appendChild(va)}
 detail.addEventListener('scroll',()=>{
   const max=detail.scrollHeight-detail.clientHeight;
   const p=max>0?Math.min(100,Math.round(detail.scrollTop/max*100)):0;
@@ -743,11 +973,39 @@ addEventListener('click',e=>{
 /* ================= 灯箱 ================= */
 const lb=document.getElementById('lightbox'),lbImg=lb.querySelector('img');
 document.addEventListener('click',e=>{
-  const f=e.target.closest('.gallery figure');
+  if(window.__wallMoved&&Date.now()-window.__wallMoved<400)return;
+  const f=e.target.closest('.gallery figure, .about-fig, .wall-tile, .polaroid');
   if(f){lbImg.src=f.dataset.src;lb.classList.add('show')}
 });
 lb.addEventListener('click',()=>lb.classList.remove('show'));
 addEventListener('keydown',e=>{if(e.key==='Escape'){lb.classList.remove('show');closeMenu()}});
+
+/* ================= 关于我 · 照片墙交互（横滑 + 拖拽） ================= */
+(function(){
+  const wall=()=>document.getElementById('wallScroll');
+  let down=false,startX=0,sl=0,moved=false;
+  document.addEventListener('wheel',e=>{
+    const w=wall();if(!w||!w.contains(e.target)||!e.deltaY)return;
+    w.scrollLeft+=e.deltaY;e.preventDefault();
+  },{passive:false});
+  document.addEventListener('pointerdown',e=>{
+    const w=wall();if(!w||!w.contains(e.target))return;
+    down=true;moved=false;startX=e.pageX;sl=w.scrollLeft;
+    try{w.setPointerCapture(e.pointerId)}catch(_){}w.classList.add('dragging');
+  });
+  document.addEventListener('pointermove',e=>{
+    if(!down)return;const w=wall();if(!w)return;
+    const dx=e.pageX-startX;if(Math.abs(dx)>5)moved=true;
+    w.scrollLeft=sl-dx;
+  });
+  const end=e=>{
+    if(!down)return;down=false;const w=wall();
+    if(w){w.classList.remove('dragging');try{w.releasePointerCapture(e.pointerId)}catch(_){}}
+    if(moved)window.__wallMoved=Date.now();
+  };
+  document.addEventListener('pointerup',end);
+  document.addEventListener('pointercancel',end);
+})();
 
 /* ================= 猫向导引入 ================= */
 (function(){
@@ -772,9 +1030,10 @@ catch(err){ fail(); return; }
 function fail(){
   const f=document.getElementById('webglFail');
   f.classList.add('show');
-  f.innerHTML=`<div><p style="font-weight:900;font-size:18px">🏝️ 3D 小镇加载失败了</p>
-  <p style="color:var(--ink-soft);font-size:13px;margin:6px 0 14px">（可能是网络或 WebGL 不可用）不过板块都能正常看：</p>
-  ${ORDER.map(k=>`<button data-open="${k}" style="margin:4px;background:var(--accent);color:#fff;border-radius:99px;padding:8px 18px;font-weight:700">${window.__co?BOARDS[k].zh:k}</button>`).join('')}</div>`;
+  const L=lang==='en';
+  f.innerHTML=`<div><p style="font-weight:900;font-size:18px">${L?'🏝️ The 3D town failed to load':'🏝️ 3D 小镇加载失败了'}</p>
+  <p style="color:var(--ink-soft);font-size:13px;margin:6px 0 14px">${L?'(Maybe a network or WebGL issue — but all sections still work:)':'（可能是网络或 WebGL 不可用）不过板块都能正常看：'}</p>
+  ${ORDER.map(k=>`<button data-open="${k}" style="margin:4px;background:var(--accent);color:#fff;border-radius:99px;padding:8px 18px;font-weight:700">${window.__co?(L?BOARDS[k].en:BOARDS[k].zh):k}</button>`).join('')}</div>`;
 }
 
 const stage=document.getElementById('stage');
@@ -886,6 +1145,35 @@ function wbox(parent,c,x,y,z,w,h,d){
   m.castShadow=m.receiveShadow=true;
   parent.add(m);return m;
 }
+/* 窗户纹理：深色窗框 + 天光反射玻璃 + 十字窗棂（替代原先的纯色大方块） */
+const winTexCache={};
+function winFor(glass){
+  if(winTexCache[glass])return winTexCache[glass];
+  const cv=document.createElement('canvas');cv.width=cv.height=128;
+  const ctx=cv.getContext('2d');
+  const frame='#43281a';
+  ctx.fillStyle=frame;ctx.fillRect(0,0,128,128);               // 窗框底
+  const ins=12;
+  const top=new THREE.Color(glass).lerp(new THREE.Color('#ffffff'),.58);
+  const bot=new THREE.Color(glass).lerp(new THREE.Color('#9fb3c8'),.42);
+  const grad=ctx.createLinearGradient(0,ins,0,128-ins);
+  grad.addColorStop(0,'#'+top.getHexString());
+  grad.addColorStop(1,'#'+bot.getHexString());
+  ctx.fillStyle=grad;ctx.fillRect(ins,ins,104,104);            // 玻璃
+  ctx.fillStyle=frame;
+  ctx.fillRect(60,ins,8,104);ctx.fillRect(ins,60,104,8);      // 十字窗棂
+  ctx.fillStyle='rgba(255,255,255,.22)';ctx.fillRect(ins+5,ins+5,44,9); // 玻璃高光
+  const tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;
+  winTexCache[glass]={texture:tex};
+  return winTexCache[glass];
+}
+function winMesh(g,glass,x,y,z,w,h,d){
+  const m=new THREE.MeshLambertMaterial({map:winFor(glass).texture,emissive:new THREE.Color('#ffcf7a'),emissiveIntensity:0});
+  nightMats.push(m);
+  const mesh=new THREE.Mesh(BOX,m);
+  mesh.position.set(x,y,z);mesh.scale.set(w,h,d);
+  mesh.castShadow=mesh.receiveShadow=true;g.add(mesh);return mesh;
+}
 
 /* ===== 木底座 + 草地 ===== */
 const island=new THREE.Group();scene.add(island);
@@ -909,12 +1197,12 @@ function tower(g,{w,d,floors,fh,wall,side,win,roof}){
   for(let i=0;i<floors;i++){
     const z0=.06,fy=fh*i+fh*.55;
     for(const sx of[-1,1]){                          /* 前后窗 */
-      wbox(g,win,sx*w*.24,fy,d/2+z0, w*.26,fh*.42,.05);
-      wbox(g,win,sx*w*.24,fy,-d/2-z0, w*.26,fh*.42,.05);
+      winMesh(g,win,sx*w*.24,fy,d/2+z0, w*.26,fh*.42,.05);
+      winMesh(g,win,sx*w*.24,fy,-d/2-z0, w*.26,fh*.42,.05);
     }
     for(const sz of[-1,1]){                          /* 左右窗 */
-      wbox(g,win,w/2+z0,fy,sz*d*.24, .05,fh*.42,d*.26);
-      wbox(g,win,-w/2-z0,fy,sz*d*.24, .05,fh*.42,d*.26);
+      winMesh(g,win,w/2+z0,fy,sz*d*.24, .05,fh*.42,d*.26);
+      winMesh(g,win,-w/2-z0,fy,sz*d*.24, .05,fh*.42,d*.26);
     }
   }
   box(g,'#b08147',0,.5,d/2+.14,w*.34,1,d*.3).scale.set(w*.34,1,.12); /* 门 */
@@ -1619,7 +1907,7 @@ let ride=null; // {type:'ferris'|'train'|'return', fromEye, fromLook, look, ktt}
 const HOME_TGT=new THREE.Vector3(0,1.6,0);
 function showToast(txt){
   let el=document.getElementById('rideToast');
-  if(!el){el=document.createElement('div');el.id='rideToast';el.style.cssText='position:fixed;left:50%;top:16%;transform:translateX(-50%) translateY(6px);z-index:9999;background:rgba(67,40,26,.92);color:#fff;padding:10px 20px;border-radius:99px;font-size:14px;pointer-events:none;transition:opacity .3s,transform .3s;opacity:0;font-family:inherit';document.body.appendChild(el);}
+  if(!el){el=document.createElement('div');el.id='rideToast';el.style.cssText='position:fixed;left:50%;top:16%;transform:translateX(-50%) translateY(6px);z-index:9999;background:rgba(var(--ink-rgb),.92);color:#fff;padding:10px 20px;border-radius:99px;font-size:14px;pointer-events:none;transition:opacity .3s,transform .3s;opacity:0;font-family:inherit';document.body.appendChild(el);}
   el.textContent=txt;el.style.opacity=1;el.style.transform='translateX(-50%) translateY(0)';
   clearTimeout(el._t);el._t=setTimeout(()=>{el.style.opacity=0;el.style.transform='translateX(-50%) translateY(6px)'},1800);
 }
@@ -1922,6 +2210,7 @@ function sfx(kind,note){
     default: sfxBlip(520,520,0.06,'sine',0.15);
   }
 }
+window.sfx=sfx; /* 暴露到全局，供经典 <script> 块的 onclick 调用 */
 /* 背景音乐 */
 const music={on:false,gain:null,timer:null,step:0,vol:0.6};
 const CHORDS=[
